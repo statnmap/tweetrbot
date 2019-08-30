@@ -1,0 +1,25 @@
+---
+title: "aa-retrieve-tweets-and-store"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{aa-retrieve-tweets-and-store}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE
+)
+```
+
+```{r setup, eval=FALSE}
+library(tweetbotr)
+# Run
+get_and_store(query = "#rspatial", n_tweets = 20)
+retweet_and_update(n_tweets = 20, n_limit = 3, sys_sleep = 600, debug = TRUE)
+
+```
