@@ -163,7 +163,7 @@ retweet_and_update <- function(
                 substr(to_tweets$text[w.id], 1, 180)))
     retweet_id <- to_tweets$status_id[w.id]
     # Retweet
-    if (isTRUE(debug)) {
+    if (!isTRUE(debug)) {
       r <- post_tweet(retweet_id = retweet_id)
     } else {
       cat("debug mode activated, not tweeted\n")
