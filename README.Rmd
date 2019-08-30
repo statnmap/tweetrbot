@@ -52,6 +52,8 @@ to_install <- c("dplyr", "magrittr", "rtweet")
 
 ## Example
 
+This package is presented in a blog post on <https://statnmap.com/>  
+
 This is set for a bot. This means that every tweets retrieved from `get_and_store()` will be retweet using `retweet_and_update()` using a loop, with 1 tweet every 600 seconds here. Also set to `debug=TRUE` like here to avoid really tweeting on Twitter if you want to make some tests.  
 
 ```{r example, eval=FALSE}
