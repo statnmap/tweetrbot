@@ -2,10 +2,11 @@
 #'
 #' @param query search tweet query
 #' @param n_tweets n_tweets
-#' @param tweets_file tweets_file
-#' @param complete_tweets_file complete_tweets_file
-#' @param log log
-#' @param logfile logfile
+#' @param dir Path where everything will be saved
+#' @param tweets_file tweets_file path name relative to dir
+#' @param complete_tweets_file complete_tweets_file path name relative to dir
+#' @param log Logical
+#' @param logfile logfile path name relative to dir
 #'
 #' @importFrom rtweet search_tweets
 #' @importFrom dplyr mutate bind_rows arrange distinct desc
@@ -13,13 +14,16 @@
 #' @export
 get_and_store <- function(
   query = "#rspatial", n_tweets = 20,
+  dir = ".",
   tweets_file = "tweets_rspatial.rds",
   complete_tweets_file = "complete_tweets_rspatial.rds",
   log = TRUE, logfile = "rtweet_console.log") {
 
+  if (!dir.exists(dir)) {dir.create(dir)}
+
   # For logs
   if (isTRUE(log)) {
-    sink(file = logfile, append = FALSE)
+    sink(file = file.path(dir, logfile), append = FALSE)
   }
 
   # Number of tweets to retrieve
@@ -42,8 +46,8 @@ get_and_store <- function(
     cat("Add tweets to to-tweet database\n") # for log
   }
   # tweets_file <- "tweets_rspatial.rds"
-  if (file.exists(tweets_file)) {
-    old_tweets <- readRDS(tweets_file)
+  if (file.exists(file.path(dir, tweets_file))) {
+    old_tweets <- readRDS(file.path(dir, tweets_file))
     newold_tweets <- new_tweets %>%
       bind_rows(old_tweets) %>%
       arrange(desc(bot_retweet)) %>% # TRUE first
@@ -51,22 +55,22 @@ get_and_store <- function(
   } else {
     newold_tweets <- new_tweets
   }
-  saveRDS(newold_tweets, tweets_file)
+  saveRDS(newold_tweets, file.path(dir, tweets_file))
 
   # Add to the complete database
   if (isTRUE(log)) {
     cat("Add tweets to complete database\n") # for log
   }
   # complete_tweets_file <- "complete_tweets_rspatial.rds"
-  if (file.exists(complete_tweets_file)) {
-    complete_old_tweets <- readRDS(complete_tweets_file)
+  if (file.exists(file.path(dir, complete_tweets_file))) {
+    complete_old_tweets <- readRDS(file.path(dir, complete_tweets_file))
     complete_newold_tweets <- new_tweets %>%
       bind_rows(complete_old_tweets) %>%
       distinct(status_id, .keep_all = TRUE)
   } else {
     complete_newold_tweets <- new_tweets
   }
-  saveRDS(complete_newold_tweets, complete_tweets_file)
+  saveRDS(complete_newold_tweets, file.path(dir, complete_tweets_file))
 
   # Stop sink
   if (isTRUE(log)) {
@@ -77,12 +81,13 @@ get_and_store <- function(
 
 #' Retweet and update the database of tweets to tweet
 #'
-#' @param tweets_file tweets_file
-#' @param complete_tweets_file complete_tweets_file
+#' @param dir Directory where everything will be saved
+#' @param tweets_file tweets_file path name relative to dir
+#' @param complete_tweets_file complete_tweets_file path name relative to dir
 #' @param log Logical
-#' @param logfile logfile
-#' @param loop_pid_file loop_pid_file
-#' @param tweets_failed_file tweets_failed_file
+#' @param logfile logfile path name relative to dir
+#' @param loop_pid_file loop_pid_file path name relative to dir
+#' @param tweets_failed_file tweets_failed_file path name relative to dir
 #' @param n_tweets n_tweets
 #' @param n_limit n_limit
 #' @param sys_sleep sys_sleep
@@ -94,6 +99,7 @@ get_and_store <- function(
 #'
 #' @export
 retweet_and_update <- function(
+  dir = ".",
   tweets_file = "tweets_rspatial.rds",
   complete_tweets_file = "complete_tweets_rspatial.rds",
   log = TRUE, logfile = "rtweet_console.log",
@@ -103,9 +109,13 @@ retweet_and_update <- function(
   debug = FALSE
 ){
 
+  if (!dir.exists(dir)) {
+    stop(paste("dir: '", dir, "' does not exist. There no directory to retrieve files from."))
+  }
+
   # For logs
   if (isTRUE(log)) {
-    sink(file = logfile, append = FALSE)
+    sink(file = file.path(dir, logfile), append = FALSE)
   }
 
   # Get current PID
@@ -113,8 +123,10 @@ retweet_and_update <- function(
 
   # Read log PID to verify no running process
   # loop_pid_file <- "loop_pid.log"
-  if (!file.exists(loop_pid_file)) {file.create(loop_pid_file)}
-  loop_pid <- readLines(loop_pid_file)
+  if (!file.exists(file.path(dir, loop_pid_file))) {
+    file.create(file.path(dir, loop_pid_file))
+  }
+  loop_pid <- readLines(file.path(dir, loop_pid_file))
 
   # Run loop only if not already running
   if (length(loop_pid) != 0)  {
@@ -128,11 +140,11 @@ retweet_and_update <- function(
     cat("Start the loop\n") # for log
   }
   # Fill the log file to prevent other process
-  writeLines(current_pid, loop_pid_file)
+  writeLines(current_pid, file.path(dir, loop_pid_file))
 
   # Add a column to database to define retweeting order
   tweets_file <- "tweets_rspatial.rds"
-  to_tweets <- readRDS(tweets_file) %>%
+  to_tweets <- readRDS(file.path(dir, tweets_file)) %>%
     filter(bot_retweet == FALSE) %>%
     arrange(desc(created_at)) %>% # older at the end
     mutate(retweet_order = rev(1:n())) %>% # older tweeted first
@@ -183,22 +195,22 @@ retweet_and_update <- function(
 
     # _Add failed to the existing database
     # tweets_failed_file <- "tweets_failed_rspatial.rds"
-    if (file.exists(tweets_failed_file)) {
-      old_failed_tweets <- readRDS(tweets_failed_file)
+    if (file.exists(file.path(dir, tweets_failed_file))) {
+      old_failed_tweets <- readRDS(file.path(dir, tweets_failed_file))
       newold_failed_tweets <- failed_tweets %>%
         bind_rows(old_failed_tweets) %>%
         distinct(status_id, .keep_all = TRUE)
     } else {
       newold_failed_tweets <- failed_tweets
     }
-    saveRDS(newold_failed_tweets, tweets_failed_file)
+    saveRDS(newold_failed_tweets, file.path(dir, tweets_failed_file))
     if (isTRUE(log)) {
       cat("save failed tweets\n")
     }
 
     # Read current dataset on disk again (in case there was an update)
     # tweets_file <- "tweets_rspatial.rds"
-    current_tweets <- readRDS(tweets_file)
+    current_tweets <- readRDS(file.path(dir, tweets_file))
     # Remove duplicates, keep retweet = TRUE (first in list)
     updated_tweets <- to_tweets %>%
       bind_rows(current_tweets) %>%
@@ -211,7 +223,7 @@ retweet_and_update <- function(
         slice(1:(n_tweets * n_limit))
     }
     # Save updated list of tweets
-    saveRDS(updated_tweets, tweets_file)
+    saveRDS(updated_tweets, file.path(dir, tweets_file))
     if (isTRUE(log)) {
       cat("save updated database\n")
     }
@@ -222,7 +234,7 @@ retweet_and_update <- function(
   }
 
   # remove pid when loop finished
-  file.remove(loop_pid_file)
+  file.remove(file.path(dir, loop_pid_file))
 
   # Stop sink
   if (isTRUE(log)) {

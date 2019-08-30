@@ -57,8 +57,10 @@ tic::use_tic()
 usethis::use_r("rtweet_functions")
 # _Readme
 # usethis::use_readme_rmd()
-chameleon::generate_readme_rmd()
+chameleon::generate_readme_rmd(source = "github",
+                               url = "statnmap/tweetrbot")
 chameleon::generate_readme_rmd(parts = "description")
+
 # _News
 usethis::use_news_md()
 # _Vignette

@@ -4,7 +4,7 @@
 \alias{get_and_store}
 \title{Retrieve tweets and store locally}
 \usage{
-get_and_store(query = "#rspatial", n_tweets = 20,
+get_and_store(query = "#rspatial", n_tweets = 20, dir = ".",
   tweets_file = "tweets_rspatial.rds",
   complete_tweets_file = "complete_tweets_rspatial.rds", log = TRUE,
   logfile = "rtweet_console.log")
@@ -14,13 +14,15 @@ get_and_store(query = "#rspatial", n_tweets = 20,
 
 \item{n_tweets}{n_tweets}
 
-\item{tweets_file}{tweets_file}
+\item{dir}{Path where everything will be saved}
 
-\item{complete_tweets_file}{complete_tweets_file}
+\item{tweets_file}{tweets_file path name relative to dir}
 
-\item{log}{log}
+\item{complete_tweets_file}{complete_tweets_file path name relative to dir}
 
-\item{logfile}{logfile}
+\item{log}{Logical}
+
+\item{logfile}{logfile path name relative to dir}
 }
 \description{
 Retrieve tweets and store locally
