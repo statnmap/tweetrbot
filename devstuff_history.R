@@ -5,6 +5,11 @@ usethis::use_build_ignore("img")
 usethis::use_build_ignore("rsconnect")
 usethis::use_git_ignore("docs/")
 usethis::use_git_ignore("rsconnect/")
+
+usethis::use_build_ignore("rtweet_info.log")
+usethis::use_build_ignore("timeline_rspatial.rds")
+usethis::use_git_ignore("rtweet_info.log")
+usethis::use_git_ignore("timeline_rspatial.rds")
 # usethis::create_package(".")
 
 # description ----
@@ -56,6 +61,7 @@ tic::use_tic()
 # Documentation ----
 # _Functions
 usethis::use_r("rtweet_functions")
+usethis::use_r("get_account_info")
 # _Readme
 # usethis::use_readme_rmd()
 chameleon::generate_readme_rmd(source = "github",

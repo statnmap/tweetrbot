@@ -12,31 +12,23 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  eval = FALSE
+  eval = TRUE
 )
 ```
 
+```{r}
+library(tweetrbot)
+```
+
+## Run the scripts to retweet a specific hashtag
 ```{r setup, eval=FALSE}
-library(tweetbotr)
 # Run
 get_and_store(query = "#rspatial", n_tweets = 20)
 retweet_and_update(n_tweets = 20, n_limit = 3, sys_sleep = 600, debug = TRUE)
-
 ```
 
+## Run the script to retrieve your user information
 ```{r}
-get_accout_info <- function(account, dir = ".", timeline_file = "timeline_rspatial.rds") {
-  # Get last tweet only
-  last_tweet <- rtweet::get_timelines(c("talk_rspatial"), n = 1)
-  
-  timeline <- dplyr::tibble(
-    # Time of retrieval
-    date = Sys.time(),
-    # Number of followers
-    followers_count = last_tweet$followers_count,
-    # Tweets of my account
-    statuses_count = last_tweet$statuses_count
-  )
-}
+get_account_info(user = "talk_rspatial")
 ```
 

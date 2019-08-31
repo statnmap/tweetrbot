@@ -26,9 +26,6 @@ get_and_store <- function(
     sink(file = file.path(dir, logfile), append = FALSE)
   }
 
-  # Number of tweets to retrieve
-  # n_tweets <- 20
-
   # Retrieve tweets for one hashtag
   if (isTRUE(log)) {
     cat("Retrieve tweets\n") # for log
@@ -238,7 +235,7 @@ retweet_and_update <- function(
       Sys.sleep(sys_sleep)
     }
   } else {
-    cat("Nothing to tweet")
+    cat("Nothing to tweet\n")
   }
 
   # remove pid when loop finished

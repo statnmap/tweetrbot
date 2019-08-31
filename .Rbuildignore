@@ -4,3 +4,5 @@
 ^LICENSE\.md$
 ^README\.Rmd$
 ^img$
+^rtweet_info\.log$
+^timeline_rspatial\.rds$
