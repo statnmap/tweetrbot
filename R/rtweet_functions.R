@@ -151,7 +151,7 @@ retweet_and_update <- function(
     select(retweet_order, bot_retweet, everything())
 
   # Retweet if non empty
-  if (nrow(to_tweets)) {
+  if (nrow(to_tweets) != 0) {
     for (i in sort(to_tweets$retweet_order)) {
       if (isTRUE(log)) {
         cat("Loop: ", i, "/", max(to_tweets$retweet_order), "\n") # for log
@@ -234,6 +234,8 @@ retweet_and_update <- function(
       # Sys.sleep(60*10) # Sleep 10 minutes
       Sys.sleep(sys_sleep)
     }
+  } else {
+    cat("Nothing to tweet")
   }
 
   # remove pid when loop finished
