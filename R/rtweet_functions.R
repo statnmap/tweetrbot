@@ -150,91 +150,95 @@ retweet_and_update <- function(
     mutate(retweet_order = rev(1:n())) %>% # older tweeted first
     select(retweet_order, bot_retweet, everything())
 
-  # Retweet
-  for (i in sort(to_tweets$retweet_order)) {
-    if (isTRUE(log)) {
-      cat("Loop: ", i, "/", max(to_tweets$retweet_order), "\n") # for log
-    }
-    # which to retweet
-    w.id <- which(to_tweets$retweet_order == i)
-    print(paste(i, "- Retweet: N=",
-                to_tweets$retweet_order[w.id],
-                "-",
-                substr(to_tweets$text[w.id], 1, 180)))
-    retweet_id <- to_tweets$status_id[w.id]
-    # Retweet
-    if (!isTRUE(debug)) {
-      r <- post_tweet(retweet_id = retweet_id)
-    } else {
-      cat("debug mode activated, not tweeted\n")
-      r <- list()
-      r$status_code <- sample(c(200, 200, 404), 1)
-    }
-    # Change status
-    if (r$status_code == 200) {
-      # status OK
-      to_tweets$bot_retweet[w.id] <- TRUE
+  # Retweet if non empty
+  if (nrow(to_tweets)) {
+    for (i in sort(to_tweets$retweet_order)) {
       if (isTRUE(log)) {
-        cat("status ok\n")
+        cat("Loop: ", i, "/", max(to_tweets$retweet_order), "\n") # for log
       }
-    } else {
-      # status not OK
-      to_tweets$bot_retweet[w.id] <- NA
+      # which to retweet
+      w.id <- which(to_tweets$retweet_order == i)
+      print(paste(i, "- Retweet: N=",
+                  to_tweets$retweet_order[w.id],
+                  "-",
+                  substr(to_tweets$text[w.id], 1, 180)))
+      retweet_id <- to_tweets$status_id[w.id]
+      # Retweet
+      if (!isTRUE(debug)) {
+        cat("let's tweet !")
+        r <- post_tweet(retweet_id = retweet_id)
+      } else {
+        cat("debug mode activated, not tweeted\n")
+        r <- list()
+        r$status_code <- sample(c(200, 200, 404), 1)
+      }
+      # Change status
+      if (r$status_code == 200) {
+        # status OK
+        to_tweets$bot_retweet[w.id] <- TRUE
+        if (isTRUE(log)) {
+          cat("status ok\n")
+        }
+      } else {
+        # status not OK
+        to_tweets$bot_retweet[w.id] <- NA
+        if (isTRUE(log)) {
+          cat("status failed\n")
+        }
+      }
+      #   # Wait before the following retweet to avoid to be ban
+      #   # Sys.sleep(60*10) # Sleep 10 minutes
+      #   Sys.sleep(sys_sleep)
+      # }
+
+      # Save failure in other database
+      failed_tweets <- to_tweets %>%
+        filter(is.na(bot_retweet))
+
+      # _Add failed to the existing database
+      # tweets_failed_file <- "tweets_failed_rspatial.rds"
+      if (file.exists(file.path(dir, tweets_failed_file))) {
+        old_failed_tweets <- readRDS(file.path(dir, tweets_failed_file))
+        newold_failed_tweets <- failed_tweets %>%
+          bind_rows(old_failed_tweets) %>%
+          distinct(status_id, .keep_all = TRUE)
+      } else {
+        newold_failed_tweets <- failed_tweets
+      }
+      saveRDS(newold_failed_tweets, file.path(dir, tweets_failed_file))
       if (isTRUE(log)) {
-        cat("status failed\n")
+        cat("save failed tweets\n")
       }
-    }
-    #   # Wait before the following retweet to avoid to be ban
-    #   # Sys.sleep(60*10) # Sleep 10 minutes
-    #   Sys.sleep(sys_sleep)
-    # }
 
-    # Save failure in other database
-    failed_tweets <- to_tweets %>%
-      filter(is.na(bot_retweet))
-
-    # _Add failed to the existing database
-    # tweets_failed_file <- "tweets_failed_rspatial.rds"
-    if (file.exists(file.path(dir, tweets_failed_file))) {
-      old_failed_tweets <- readRDS(file.path(dir, tweets_failed_file))
-      newold_failed_tweets <- failed_tweets %>%
-        bind_rows(old_failed_tweets) %>%
+      # Read current dataset on disk again (in case there was an update)
+      # tweets_file <- "tweets_rspatial.rds"
+      current_tweets <- readRDS(file.path(dir, tweets_file))
+      # Remove duplicates, keep retweet = TRUE (first in list)
+      updated_tweets <- to_tweets %>%
+        bind_rows(current_tweets) %>%
+        arrange(desc(bot_retweet)) %>% # TRUE first
         distinct(status_id, .keep_all = TRUE)
-    } else {
-      newold_failed_tweets <- failed_tweets
-    }
-    saveRDS(newold_failed_tweets, file.path(dir, tweets_failed_file))
-    if (isTRUE(log)) {
-      cat("save failed tweets\n")
-    }
+      # Remove data from the to-tweets database if number is bigger than 50 and already retweeted
+      if (nrow(updated_tweets) > (n_tweets * n_limit)) {
+        updated_tweets <- updated_tweets %>%
+          arrange(desc(created_at)) %>%
+          slice(1:(n_tweets * n_limit))
+      }
+      # Save updated list of tweets
+      saveRDS(updated_tweets, file.path(dir, tweets_file))
+      if (isTRUE(log)) {
+        cat("save updated database\n")
+      }
 
-    # Read current dataset on disk again (in case there was an update)
-    # tweets_file <- "tweets_rspatial.rds"
-    current_tweets <- readRDS(file.path(dir, tweets_file))
-    # Remove duplicates, keep retweet = TRUE (first in list)
-    updated_tweets <- to_tweets %>%
-      bind_rows(current_tweets) %>%
-      arrange(desc(bot_retweet)) %>% # TRUE first
-      distinct(status_id, .keep_all = TRUE)
-    # Remove data from the to-tweets database if number is bigger than 50 and already retweeted
-    if (nrow(updated_tweets) > (n_tweets * n_limit)) {
-      updated_tweets <- updated_tweets %>%
-        arrange(desc(created_at)) %>%
-        slice(1:(n_tweets * n_limit))
+      # Wait before the following retweet to avoid to be ban
+      # Sys.sleep(60*10) # Sleep 10 minutes
+      Sys.sleep(sys_sleep)
     }
-    # Save updated list of tweets
-    saveRDS(updated_tweets, file.path(dir, tweets_file))
-    if (isTRUE(log)) {
-      cat("save updated database\n")
-    }
-
-    # Wait before the following retweet to avoid to be ban
-    # Sys.sleep(60*10) # Sleep 10 minutes
-    Sys.sleep(sys_sleep)
   }
 
   # remove pid when loop finished
   file.remove(file.path(dir, loop_pid_file))
+  cat("Removed PID file\n")
 
   # Stop sink
   if (isTRUE(log)) {
