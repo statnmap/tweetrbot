@@ -16,8 +16,8 @@ Current version is 0.0.0.9000. <!-- description: end -->
 
 <!-- install: start -->
 
-The list of dependencies required to install this package is: dplyr,
-knitr, magrittr, rmarkdown, rtweet.
+The list of dependencies required to install this package is: {dplyr},
+{knitr}, {magrittr}, {rmarkdown}, {rtweet}.
 
 To install the package, you can run the following script
 
@@ -46,12 +46,14 @@ to_install <- c("dplyr", "magrittr", "rtweet")
 
 ## Example
 
+<img src="img/fig_tweetrbot_with_func.png" width="60%" style="display: block; margin: auto;" />
+
 This package is presented in a blog post on <https://statnmap.com/>
 
 This is set for a bot. This means that every tweets retrieved from
-`get_and_store()` will be retweet using `retweet_and_update()` using a
-loop, with 1 tweet every 600 seconds here. Also set to `debug=TRUE` like
-here to avoid really tweeting on Twitter if you want to make some tests.
+`get_and_store()` will be retweeted using `retweet_and_update()` using a
+loop, with 1 tweet every 600 seconds here. Set to `debug=TRUE` to avoid
+really tweeting on Twitter if you want to make some tests.
 
 ``` r
 library(tweetrbot)
