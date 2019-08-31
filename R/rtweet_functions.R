@@ -144,14 +144,17 @@ retweet_and_update <- function(
 
   # Add a column to database to define retweeting order
   tweets_file <- "tweets_rspatial.rds"
-  to_tweets <- readRDS(file.path(dir, tweets_file)) %>%
-    filter(bot_retweet == FALSE) %>%
-    arrange(desc(created_at)) %>% # older at the end
-    mutate(retweet_order = rev(1:n())) %>% # older tweeted first
-    select(retweet_order, bot_retweet, everything())
+  to_tweets_filter <- readRDS(file.path(dir, tweets_file)) %>%
+    filter(bot_retweet == FALSE)
 
   # Retweet if non empty
-  if (nrow(to_tweets) != 0) {
+  if (nrow(to_tweets_filter) != 0) {
+    to_tweets <- to_tweets_filter %>%
+      arrange(desc(created_at)) %>% # older at the end
+      mutate(retweet_order = rev(1:n())) %>% # older tweeted first
+      select(retweet_order, bot_retweet, everything())
+
+    # Retweet loop
     for (i in sort(to_tweets$retweet_order)) {
       if (isTRUE(log)) {
         cat("Loop: ", i, "/", max(to_tweets$retweet_order), "\n") # for log
@@ -246,5 +249,5 @@ retweet_and_update <- function(
   if (isTRUE(log)) {
     sink(file = NULL, append = FALSE)
   }
-
+  return(0)
 }
