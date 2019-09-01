@@ -50,7 +50,6 @@ get_and_store <- function(
   if (isTRUE(log)) {
     cat("Add tweets to to-tweet database\n") # for log
   }
-  # tweets_file <- "tweets_rspatial.rds"
   if (file.exists(file.path(dir, tweets_file))) {
     old_tweets <- readRDS(file.path(dir, tweets_file))
     newold_tweets <- new_tweets %>%
@@ -66,7 +65,6 @@ get_and_store <- function(
   if (isTRUE(log)) {
     cat("Add tweets to complete database\n") # for log
   }
-  # complete_tweets_file <- "complete_tweets_rspatial.rds"
   if (file.exists(file.path(dir, complete_tweets_file))) {
     complete_old_tweets <- readRDS(file.path(dir, complete_tweets_file))
     complete_newold_tweets <- new_tweets %>%
@@ -154,7 +152,6 @@ retweet_and_update <- function(
   writeLines(current_pid, file.path(dir, loop_pid_file))
 
   # Add a column to database to define retweeting order
-  tweets_file <- "tweets_rspatial.rds"
   to_tweets_filter <- readRDS(file.path(dir, tweets_file)) %>%
     filter(bot_retweet == FALSE)
 
@@ -210,7 +207,6 @@ retweet_and_update <- function(
         filter(is.na(bot_retweet))
 
       # _Add failed to the existing database
-      # tweets_failed_file <- "tweets_failed_rspatial.rds"
       if (file.exists(file.path(dir, tweets_failed_file))) {
         old_failed_tweets <- readRDS(file.path(dir, tweets_failed_file))
         newold_failed_tweets <- failed_tweets %>%
@@ -225,7 +221,6 @@ retweet_and_update <- function(
       }
 
       # Read current dataset on disk again (in case there was an update)
-      # tweets_file <- "tweets_rspatial.rds"
       current_tweets <- readRDS(file.path(dir, tweets_file))
       # Remove duplicates, keep retweet = TRUE (first in list)
       updated_tweets <- to_tweets %>%
