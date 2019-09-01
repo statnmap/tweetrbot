@@ -5,6 +5,12 @@
 #' @param timeline_file timeline filename relative to dir
 #' @param log Logical. log file
 #' @param logfile lofile name relative to dir
+#' @param token Every user should have their own Oauth (Twitter API) token.
+#'  By default token = NULL this function looks for the path to a saved Twitter
+#'  token via environment variables (which is what 'create_token()'
+#'  sets up by default during initial token creation).
+#'  For instruction on how to create a Twitter token see the tokens vignette,
+#'  i.e., 'vignettes("auth", "rtweet")'.
 #'
 #' @importFrom dplyr tibble bind_rows arrange distinct
 #' @importFrom rtweet get_timeline
@@ -13,7 +19,8 @@
 get_account_info <- function(user = "talk_rspatial",
                              dir = ".",
                             timeline_file = "timeline_rspatial.rds",
-                            log = TRUE, logfile = "rtweet_info.log") {
+                            log = TRUE, logfile = "rtweet_info.log",
+                            token = NULL) {
   if (!dir.exists(dir)) {
     stop(paste("dir: '", dir, "' does not exist. There no directory to retrieve files from."))
   }
@@ -24,7 +31,7 @@ get_account_info <- function(user = "talk_rspatial",
   }
 
   # Get last tweet only
-  last_tweet <- get_timeline(user, n = 1)
+  last_tweet <- get_timeline(user, n = 1, token = token)
   # Get interesting information
   timeline <- tibble(
     # Time of retrieval

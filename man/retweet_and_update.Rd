@@ -8,7 +8,7 @@ retweet_and_update(dir = ".", tweets_file = "tweets_rspatial.rds",
   complete_tweets_file = "complete_tweets_rspatial.rds", log = TRUE,
   logfile = "rtweet_console.log", loop_pid_file = "loop_pid.log",
   tweets_failed_file = "tweets_failed_rspatial.rds", n_tweets = 20,
-  n_limit = 3, sys_sleep = 600, debug = FALSE)
+  n_limit = 3, sys_sleep = 600, debug = FALSE, token = NULL)
 }
 \arguments{
 \item{dir}{Directory where everything will be saved}
@@ -32,6 +32,13 @@ retweet_and_update(dir = ".", tweets_file = "tweets_rspatial.rds",
 \item{sys_sleep}{sys_sleep}
 
 \item{debug}{Logical. Use TRUE to avoid tweeting while debugging}
+
+\item{token}{Every user should have their own Oauth (Twitter API) token.
+By default token = NULL this function looks for the path to a saved Twitter
+token via environment variables (which is what 'create_token()'
+sets up by default during initial token creation).
+For instruction on how to create a Twitter token see the tokens vignette,
+i.e., 'vignettes("auth", "rtweet")'.}
 }
 \description{
 Retweet and update the database of tweets to tweet

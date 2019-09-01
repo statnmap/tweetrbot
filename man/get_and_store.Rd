@@ -7,7 +7,7 @@
 get_and_store(query = "#rspatial", n_tweets = 20, dir = ".",
   tweets_file = "tweets_rspatial.rds",
   complete_tweets_file = "complete_tweets_rspatial.rds", log = TRUE,
-  logfile = "rtweet_console.log")
+  logfile = "rtweet_console.log", token = NULL)
 }
 \arguments{
 \item{query}{search tweet query}
@@ -23,6 +23,13 @@ get_and_store(query = "#rspatial", n_tweets = 20, dir = ".",
 \item{log}{Logical}
 
 \item{logfile}{logfile path name relative to dir}
+
+\item{token}{Every user should have their own Oauth (Twitter API) token.
+By default token = NULL this function looks for the path to a saved Twitter
+token via environment variables (which is what 'create_token()'
+sets up by default during initial token creation).
+For instruction on how to create a Twitter token see the tokens vignette,
+i.e., 'vignettes("auth", "rtweet")'.}
 }
 \description{
 Retrieve tweets and store locally

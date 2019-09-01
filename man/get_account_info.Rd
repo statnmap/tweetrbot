@@ -6,7 +6,7 @@
 \usage{
 get_account_info(user = "talk_rspatial", dir = ".",
   timeline_file = "timeline_rspatial.rds", log = TRUE,
-  logfile = "rtweet_info.log")
+  logfile = "rtweet_info.log", token = NULL)
 }
 \arguments{
 \item{user}{user names or user IDs}
@@ -18,6 +18,13 @@ get_account_info(user = "talk_rspatial", dir = ".",
 \item{log}{Logical. log file}
 
 \item{logfile}{lofile name relative to dir}
+
+\item{token}{Every user should have their own Oauth (Twitter API) token.
+By default token = NULL this function looks for the path to a saved Twitter
+token via environment variables (which is what 'create_token()'
+sets up by default during initial token creation).
+For instruction on how to create a Twitter token see the tokens vignette,
+i.e., 'vignettes("auth", "rtweet")'.}
 }
 \description{
 Retrieve number of followers and tweets

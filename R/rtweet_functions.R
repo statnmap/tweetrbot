@@ -7,6 +7,12 @@
 #' @param complete_tweets_file complete_tweets_file path name relative to dir
 #' @param log Logical
 #' @param logfile logfile path name relative to dir
+#' @param token Every user should have their own Oauth (Twitter API) token.
+#'  By default token = NULL this function looks for the path to a saved Twitter
+#'  token via environment variables (which is what 'create_token()'
+#'  sets up by default during initial token creation).
+#'  For instruction on how to create a Twitter token see the tokens vignette,
+#'  i.e., 'vignettes("auth", "rtweet")'.
 #'
 #' @importFrom rtweet search_tweets
 #' @importFrom dplyr mutate bind_rows arrange distinct desc
@@ -17,7 +23,8 @@ get_and_store <- function(
   dir = ".",
   tweets_file = "tweets_rspatial.rds",
   complete_tweets_file = "complete_tweets_rspatial.rds",
-  log = TRUE, logfile = "rtweet_console.log") {
+  log = TRUE, logfile = "rtweet_console.log",
+  token = NULL) {
 
   if (!dir.exists(dir)) {dir.create(dir)}
 
@@ -32,7 +39,8 @@ get_and_store <- function(
   }
 
   new_tweets <- search_tweets(
-    query, n = n_tweets, include_rts = FALSE
+    query, n = n_tweets, include_rts = FALSE,
+    token = NULL
   ) %>%
     mutate(
       retweet_order = NA_real_,
@@ -89,6 +97,12 @@ get_and_store <- function(
 #' @param n_limit n_limit
 #' @param sys_sleep sys_sleep
 #' @param debug Logical. Use TRUE to avoid tweeting while debugging
+#' @param token Every user should have their own Oauth (Twitter API) token.
+#'  By default token = NULL this function looks for the path to a saved Twitter
+#'  token via environment variables (which is what 'create_token()'
+#'  sets up by default during initial token creation).
+#'  For instruction on how to create a Twitter token see the tokens vignette,
+#'  i.e., 'vignettes("auth", "rtweet")'.
 #'
 #' @importFrom dplyr filter arrange filter mutate select desc everything
 #' @importFrom dplyr bind_rows distinct slice n
@@ -103,7 +117,7 @@ retweet_and_update <- function(
   loop_pid_file = "loop_pid.log",
   tweets_failed_file = "tweets_failed_rspatial.rds",
   n_tweets = 20, n_limit = 3, sys_sleep = 600,
-  debug = FALSE
+  debug = FALSE, token = NULL
 ){
 
   if (!dir.exists(dir)) {
@@ -166,7 +180,7 @@ retweet_and_update <- function(
       # Retweet
       if (!isTRUE(debug)) {
         cat("let's tweet !")
-        r <- post_tweet(retweet_id = retweet_id)
+        r <- post_tweet(retweet_id = retweet_id, token = token)
       } else {
         cat("debug mode activated, not tweeted\n")
         r <- list()
@@ -218,7 +232,7 @@ retweet_and_update <- function(
         bind_rows(current_tweets) %>%
         arrange(desc(bot_retweet)) %>% # TRUE first
         distinct(status_id, .keep_all = TRUE)
-      # Remove data from the to-tweets database if number is bigger than 50 and already retweeted
+      # Remove data from the to-tweets database if number is bigger than 'n_limit' and already retweeted
       if (nrow(updated_tweets) > (n_tweets * n_limit)) {
         updated_tweets <- updated_tweets %>%
           arrange(desc(created_at)) %>%
