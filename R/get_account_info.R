@@ -18,9 +18,9 @@
 #' @export
 get_account_info <- function(user = "talk_rspatial",
                              dir = ".",
-                            timeline_file = "timeline_rspatial.rds",
-                            log = TRUE, logfile = "rtweet_info.log",
-                            token = NULL) {
+                             timeline_file = "timeline_rspatial.rds",
+                             log = TRUE, logfile = "rtweet_info.log",
+                             token = NULL) {
   if (!dir.exists(dir)) {
     stop(paste("dir: '", dir, "' does not exist. There no directory to retrieve files from."))
   }
@@ -32,15 +32,26 @@ get_account_info <- function(user = "talk_rspatial",
 
   # Get last tweet only
   last_tweet <- get_timeline(user, n = 1, token = token)
-  # Get interesting information
-  timeline <- tibble(
-    # Time of retrieval
-    date = Sys.time(),
-    # Number of followers
-    followers_count = last_tweet$followers_count,
-    # Tweets of my account
-    statuses_count = last_tweet$statuses_count
-  )
+  if (nrow(last_tweet) == 0) {
+    timeline <- tibble(
+      # Time of retrieval
+      date = Sys.time(),
+      # Number of followers
+      followers_count = NA_real_,
+      # Tweets of my account
+      statuses_count = 0
+    )
+  } else {
+    # Get interesting information
+    timeline <- tibble(
+      # Time of retrieval
+      date = Sys.time(),
+      # Number of followers
+      followers_count = last_tweet$followers_count,
+      # Tweets of my account
+      statuses_count = last_tweet$statuses_count
+    )
+  }
 
   # Add to the existing database
   if (isTRUE(log)) {
