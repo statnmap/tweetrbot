@@ -188,7 +188,7 @@ retweet_and_update <- function(
   }
 
   if (isTRUE(log)) {
-    cat("Start the loop\n") # for log
+   cat("Start the loop -", as.character(Sys.time()), "\n") # for log
   }
   # Fill the log file to prevent other process
   writeLines(current_pid, file.path(dir, loop_pid_file))
@@ -218,7 +218,9 @@ retweet_and_update <- function(
       retweet_id <- to_tweets$status_id[w.id]
       # Retweet
       if (!isTRUE(debug)) {
-        cat("Loop : let's tweet !")
+        if (isTRUE(log)) {
+          cat("Loop : let's tweet !", as.character(Sys.time()), "\n")
+        }
         r <- post_tweet(retweet_id = retweet_id, token = token)
       } else {
         cat("Loop : debug mode activated, not tweeted\n")
@@ -230,13 +232,13 @@ retweet_and_update <- function(
         # status OK
         to_tweets$bot_retweet[w.id] <- TRUE
         if (isTRUE(log)) {
-          cat("Loop : status ok\n")
+          cat("Loop : status ok -", as.character(Sys.time()), "\n")
         }
       } else {
         # status not OK
         to_tweets$bot_retweet[w.id] <- NA
         if (isTRUE(log)) {
-          cat("Loop : status failed\n")
+          cat("Loop : status failed -", as.character(Sys.time()), "\n")
         }
       }
       #   # Wait before the following retweet to avoid to be ban
@@ -292,7 +294,7 @@ retweet_and_update <- function(
       Sys.sleep(sys_sleep)
     }
   } else {
-    cat("Loop : Nothing to tweet\n")
+    cat("Loop : Nothing to tweet", as.character(Sys.time()), "\n")
   }
 
   # remove pid when loop finished
