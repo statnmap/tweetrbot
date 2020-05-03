@@ -15,6 +15,7 @@ BugReports: https://github.com/statnmap/tweetrbot/issues
 Imports: 
     dplyr,
     magrittr,
+    ps,
     rtweet
 Suggests: 
     knitr,

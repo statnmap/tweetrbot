@@ -16,6 +16,7 @@
 #'
 #' @importFrom rtweet search_tweets
 #' @importFrom dplyr mutate bind_rows arrange distinct desc
+#' @importFrom dplyr group_by case_when ungroup
 #'
 #' @export
 get_and_store <- function(
@@ -54,8 +55,14 @@ get_and_store <- function(
     old_tweets <- readRDS(file.path(dir, tweets_file))
     newold_tweets <- new_tweets %>%
       bind_rows(old_tweets) %>%
-      arrange(desc(bot_retweet)) %>% # TRUE first
-      distinct(status_id, .keep_all = TRUE)
+        # arrange(desc(bot_retweet)) # TRUE first but not NA...
+        group_by(status_id) %>%
+        mutate(bot_retweet = case_when(
+          any(is.na(bot_retweet)) ~ NA, # failed retweet
+          any(bot_retweet == TRUE) ~ TRUE, # already retweet
+          all(bot_retweet == FALSE) ~ FALSE)) %>% # not retweet
+        ungroup() %>%        
+        distinct(status_id, .keep_all = TRUE)
   } else {
     newold_tweets <- new_tweets
   }
@@ -105,6 +112,7 @@ get_and_store <- function(
 #' @importFrom dplyr filter arrange filter mutate select desc everything
 #' @importFrom dplyr bind_rows distinct slice n group_by ungroup case_when
 #' @importFrom rtweet post_tweet
+#' @importFrom ps ps_handle ps_name ps_kill ps_is_running
 #'
 #' @export
 retweet_and_update <- function(
@@ -122,11 +130,6 @@ retweet_and_update <- function(
     stop(paste("dir: '", dir, "' does not exist. There no directory to retrieve files from."))
   }
 
-  # For logs
-  if (isTRUE(log)) {
-    sink(file = file.path(dir, logfile), append = FALSE)
-  }
-
   # Get current PID
   current_pid <- as.character(Sys.getpid())
 
@@ -139,10 +142,35 @@ retweet_and_update <- function(
 
   # Run loop only if not already running
   if (length(loop_pid) != 0)  {
-    if (isTRUE(log)) {
-      cat("Loop already running\n") # for log
+    # Verify pid exists
+		pid <- as.integer(loop_pid)
+		test_pid <- try(ps_handle(pid), silent = TRUE)
+		# Does not exists
+		if (class(test_pid) == "try-error") {
+		  file.remove(file.path(dir, loop_pid_file))
+		  file.create(file.path(dir, loop_pid_file))
+		} else if (!ps_name(test_pid) %in% c("R", "Rscript")) {
+		  # Not R process       
+		  file.remove(file.path(dir, loop_pid_file))
+		  file.create(file.path(dir, loop_pid_file))
+		} else if (!ps_is_running(test_pid)) {
+		  # Not running
+		  ps_kill(test_pid)
+		  file.remove(file.path(dir, loop_pid_file))
+		  file.create(file.path(dir, loop_pid_file))
+		} else {
+  		# For logs
+	  	if (isTRUE(log)) {
+		    sink(file = file.path(dir, logfile), append = TRUE)
+        cat("--- A new process tried to start but loop was already running ---\n") # for log
+      }
+      return(NULL)
     }
-    return(NULL)
+  }
+  
+  # For logs
+  if (isTRUE(log)) {
+    sink(file = file.path(dir, logfile), append = FALSE)
   }
 
   if (isTRUE(log)) {
@@ -228,9 +256,9 @@ retweet_and_update <- function(
         # arrange(desc(bot_retweet)) # TRUE first but not NA...
         group_by(status_id) %>%
         mutate(bot_retweet = case_when(
-          any(is.na(bot_retweet)) ~ NA,
-          any(bot_retweet == TRUE) ~ TRUE,
-          all(bot_retweet == FALSE) ~ FALSE)) %>%
+          any(is.na(bot_retweet)) ~ NA, # failed retweet
+          any(bot_retweet == TRUE) ~ TRUE, # already retweet
+          all(bot_retweet == FALSE) ~ FALSE)) %>% # not retweet
         ungroup() %>%        
         distinct(status_id, .keep_all = TRUE)
       # Remove data from the to-tweets database if number is bigger than 'n_limit' and already retweeted
