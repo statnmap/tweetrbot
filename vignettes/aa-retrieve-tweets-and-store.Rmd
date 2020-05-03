@@ -28,7 +28,7 @@ retweet_and_update(n_tweets = 20, n_limit = 3, sys_sleep = 600, debug = TRUE)
 ```
 
 ## Run the script to retrieve your user information
-```{r}
+```{r, eval=FALSE}
 get_account_info(user = "talk_rspatial")
 ```
 
