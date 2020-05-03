@@ -4,10 +4,16 @@
 \alias{get_and_store}
 \title{Retrieve tweets and store locally}
 \usage{
-get_and_store(query = "#rspatial", n_tweets = 20, dir = ".",
+get_and_store(
+  query = "#rspatial",
+  n_tweets = 20,
+  dir = ".",
   tweets_file = "tweets_rspatial.rds",
-  complete_tweets_file = "complete_tweets_rspatial.rds", log = TRUE,
-  logfile = "rtweet_console.log", token = NULL)
+  complete_tweets_file = "complete_tweets_rspatial.rds",
+  log = TRUE,
+  logfile = "rtweet_console.log",
+  token = NULL
+)
 }
 \arguments{
 \item{query}{search tweet query}

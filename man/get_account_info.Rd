@@ -4,9 +4,14 @@
 \alias{get_account_info}
 \title{Retrieve number of followers and tweets}
 \usage{
-get_account_info(user = "talk_rspatial", dir = ".",
-  timeline_file = "timeline_rspatial.rds", log = TRUE,
-  logfile = "rtweet_info.log", token = NULL)
+get_account_info(
+  user = "talk_rspatial",
+  dir = ".",
+  timeline_file = "timeline_rspatial.rds",
+  log = TRUE,
+  logfile = "rtweet_info.log",
+  token = NULL
+)
 }
 \arguments{
 \item{user}{user names or user IDs}

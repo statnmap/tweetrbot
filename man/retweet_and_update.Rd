@@ -4,11 +4,20 @@
 \alias{retweet_and_update}
 \title{Retweet and update the database of tweets to tweet}
 \usage{
-retweet_and_update(dir = ".", tweets_file = "tweets_rspatial.rds",
-  complete_tweets_file = "complete_tweets_rspatial.rds", log = TRUE,
-  logfile = "rtweet_console.log", loop_pid_file = "loop_pid.log",
-  tweets_failed_file = "tweets_failed_rspatial.rds", n_tweets = 20,
-  n_limit = 3, sys_sleep = 600, debug = FALSE, token = NULL)
+retweet_and_update(
+  dir = ".",
+  tweets_file = "tweets_rspatial.rds",
+  complete_tweets_file = "complete_tweets_rspatial.rds",
+  log = TRUE,
+  logfile = "rtweet_console.log",
+  loop_pid_file = "loop_pid.log",
+  tweets_failed_file = "tweets_failed_rspatial.rds",
+  n_tweets = 20,
+  n_limit = 3,
+  sys_sleep = 600,
+  debug = FALSE,
+  token = NULL
+)
 }
 \arguments{
 \item{dir}{Directory where everything will be saved}

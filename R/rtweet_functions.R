@@ -103,7 +103,7 @@ get_and_store <- function(
 #'  i.e., 'vignettes("auth", "rtweet")'.
 #'
 #' @importFrom dplyr filter arrange filter mutate select desc everything
-#' @importFrom dplyr bind_rows distinct slice n
+#' @importFrom dplyr bind_rows distinct slice n group_by ungroup case_when
 #' @importFrom rtweet post_tweet
 #'
 #' @export
@@ -225,7 +225,13 @@ retweet_and_update <- function(
       # Remove duplicates, keep retweet = TRUE (first in list)
       updated_tweets <- to_tweets %>%
         bind_rows(current_tweets) %>%
-        arrange(desc(bot_retweet)) %>% # TRUE first
+        # arrange(desc(bot_retweet)) # TRUE first but not NA...
+        group_by(status_id) %>%
+        mutate(bot_retweet = case_when(
+          any(is.na(bot_retweet)) ~ NA,
+          any(bot_retweet == TRUE) ~ TRUE,
+          all(bot_retweet == FALSE) ~ FALSE)) %>%
+        ungroup() %>%        
         distinct(status_id, .keep_all = TRUE)
       # Remove data from the to-tweets database if number is bigger than 'n_limit' and already retweeted
       if (nrow(updated_tweets) > (n_tweets * n_limit)) {
