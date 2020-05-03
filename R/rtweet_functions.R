@@ -7,6 +7,7 @@
 #' @param complete_tweets_file complete_tweets_file path name relative to dir
 #' @param log Logical
 #' @param logfile logfile path name relative to dir
+#' @param loop_pid_file loop_pid_file path name relative to dir
 #' @param token Every user should have their own Oauth (Twitter API) token.
 #'  By default token = NULL this function looks for the path to a saved Twitter
 #'  token via environment variables (which is what 'create_token()'
@@ -25,18 +26,31 @@ get_and_store <- function(
   tweets_file = "tweets_rspatial.rds",
   complete_tweets_file = "complete_tweets_rspatial.rds",
   log = TRUE, logfile = "rtweet_console.log",
+  loop_pid_file = "loop_pid.log",
   token = NULL) {
 
   if (!dir.exists(dir)) {dir.create(dir)}
 
   # For logs
   if (isTRUE(log)) {
-    sink(file = file.path(dir, logfile), append = FALSE)
+    # Read log PID to verify no running process
+    if (file.exists(file.path(dir, loop_pid_file))) {
+      loop_pid <- readLines(file.path(dir, loop_pid_file))
+      # append log if loop is running
+      if (length(loop_pid) != 0)  {
+		    append <- TRUE
+		  } else {
+		  	append <- FALSE
+		  }
+	  } else {
+	  	append <- FALSE
+	  }
+    sink(file = file.path(dir, logfile), append = append)
   }
 
   # Retrieve tweets for one hashtag
   if (isTRUE(log)) {
-    cat("Retrieve tweets\n") # for log
+    message("--- get_and_store : Retrieve tweets ---\n") # for log
   }
 
   new_tweets <- search_tweets(
@@ -49,7 +63,7 @@ get_and_store <- function(
 
   # Add to the existing database
   if (isTRUE(log)) {
-    cat("Add tweets to to-tweet database\n") # for log
+    message("--- get_and_store : Add tweets to to-tweet database ---\n") # for log
   }
   if (file.exists(file.path(dir, tweets_file))) {
     old_tweets <- readRDS(file.path(dir, tweets_file))
@@ -70,7 +84,7 @@ get_and_store <- function(
 
   # Add to the complete database
   if (isTRUE(log)) {
-    cat("Add tweets to complete database\n") # for log
+    message("--- get_and_store : Add tweets to complete database ---\n") # for log
   }
   if (file.exists(file.path(dir, complete_tweets_file))) {
     complete_old_tweets <- readRDS(file.path(dir, complete_tweets_file))
@@ -162,7 +176,7 @@ retweet_and_update <- function(
   		# For logs
 	  	if (isTRUE(log)) {
 		    sink(file = file.path(dir, logfile), append = TRUE)
-        cat("--- A new process tried to start but loop was already running ---\n") # for log
+        message("--- A new process tried to start but loop was already running ---\n") # for log
       }
       return(NULL)
     }
@@ -174,7 +188,7 @@ retweet_and_update <- function(
   }
 
   if (isTRUE(log)) {
-    cat("Start the loop\n") # for log
+    message("Start the loop\n") # for log
   }
   # Fill the log file to prevent other process
   writeLines(current_pid, file.path(dir, loop_pid_file))
@@ -204,10 +218,10 @@ retweet_and_update <- function(
       retweet_id <- to_tweets$status_id[w.id]
       # Retweet
       if (!isTRUE(debug)) {
-        cat("let's tweet !")
+        message("Loop : let's tweet !")
         r <- post_tweet(retweet_id = retweet_id, token = token)
       } else {
-        cat("debug mode activated, not tweeted\n")
+        message("Loop : debug mode activated, not tweeted\n")
         r <- list()
         r$status_code <- sample(c(200, 200, 404), 1)
       }
@@ -216,13 +230,13 @@ retweet_and_update <- function(
         # status OK
         to_tweets$bot_retweet[w.id] <- TRUE
         if (isTRUE(log)) {
-          cat("status ok\n")
+          message("Loop : status ok\n")
         }
       } else {
         # status not OK
         to_tweets$bot_retweet[w.id] <- NA
         if (isTRUE(log)) {
-          cat("status failed\n")
+          message("Loop : status failed\n")
         }
       }
       #   # Wait before the following retweet to avoid to be ban
@@ -245,7 +259,7 @@ retweet_and_update <- function(
       }
       saveRDS(newold_failed_tweets, file.path(dir, tweets_failed_file))
       if (isTRUE(log)) {
-        cat("save failed tweets\n")
+        message("Loop : save failed tweets\n")
       }
 
       # Read current dataset on disk again (in case there was an update)
@@ -270,7 +284,7 @@ retweet_and_update <- function(
       # Save updated list of tweets
       saveRDS(updated_tweets, file.path(dir, tweets_file))
       if (isTRUE(log)) {
-        cat("save updated database\n")
+        message("Loop : save updated database\n")
       }
 
       # Wait before the following retweet to avoid to be ban
@@ -278,12 +292,12 @@ retweet_and_update <- function(
       Sys.sleep(sys_sleep)
     }
   } else {
-    cat("Nothing to tweet\n")
+    message("Loop : Nothing to tweet\n")
   }
 
   # remove pid when loop finished
   file.remove(file.path(dir, loop_pid_file))
-  cat("Removed PID file\n")
+  message("Loop : Removed PID file\n")
 
   # Stop sink
   if (isTRUE(log)) {

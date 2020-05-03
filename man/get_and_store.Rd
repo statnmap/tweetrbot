@@ -12,6 +12,7 @@ get_and_store(
   complete_tweets_file = "complete_tweets_rspatial.rds",
   log = TRUE,
   logfile = "rtweet_console.log",
+  loop_pid_file = "loop_pid.log",
   token = NULL
 )
 }
@@ -29,6 +30,8 @@ get_and_store(
 \item{log}{Logical}
 
 \item{logfile}{logfile path name relative to dir}
+
+\item{loop_pid_file}{loop_pid_file path name relative to dir}
 
 \item{token}{Every user should have their own Oauth (Twitter API) token.
 By default token = NULL this function looks for the path to a saved Twitter
