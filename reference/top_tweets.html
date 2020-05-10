@@ -135,7 +135,13 @@
     <p>Create a tweet for top retweets</p>
     </div>
 
-    <pre class="usage"><span class='fu'>top_tweets</span>(<span class='no'>all_tweets</span>, <span class='kw'>save_dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span>(), <span class='kw'>post_tweet</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>top_tweets</span>(
+  <span class='no'>all_tweets</span>,
+  <span class='kw'>save_dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span>(),
+  <span class='kw'>post_tweet</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>top_number</span> <span class='kw'>=</span> <span class='fl'>5</span>,
+  <span class='kw'>hashtag</span> <span class='kw'>=</span> <span class='st'>"rspatial"</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -151,6 +157,14 @@
     <tr>
       <th>post_tweet</th>
       <td><p>Logical. Whether to really tweet the content</p></td>
+    </tr>
+    <tr>
+      <th>top_number</th>
+      <td><p>Numeric. Number of best retweeted tweets to show on the graph</p></td>
+    </tr>
+    <tr>
+      <th>hashtag</th>
+      <td><p>Character. Which Twitter hashtag is followed</p></td>
     </tr>
     </table>
 
