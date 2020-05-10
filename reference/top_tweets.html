@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Retrieve tweets and store locally — get_and_store • tweetrbot</title>
+<title>Create a tweet for top retweets — top_tweets • tweetrbot</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Retrieve tweets and store locally — get_and_store" />
-<meta property="og:description" content="Retrieve tweets and store locally" />
+<meta property="og:title" content="Create a tweet for top retweets — top_tweets" />
+<meta property="og:description" content="Create a tweet for top retweets" />
 
 
 
@@ -126,70 +126,31 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Retrieve tweets and store locally</h1>
-    <small class="dont-index">Source: <a href='https://github.com/statnmap/tweetrbot/blob/master/R/rtweet_functions.R'><code>R/rtweet_functions.R</code></a></small>
-    <div class="hidden name"><code>get_and_store.Rd</code></div>
+    <h1>Create a tweet for top retweets</h1>
+    <small class="dont-index">Source: <a href='https://github.com/statnmap/tweetrbot/blob/master/R/top_tweets.R'><code>R/top_tweets.R</code></a></small>
+    <div class="hidden name"><code>top_tweets.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Retrieve tweets and store locally</p>
+    <p>Create a tweet for top retweets</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_and_store</span>(
-  <span class='kw'>query</span> <span class='kw'>=</span> <span class='st'>"#rspatial"</span>,
-  <span class='kw'>n_tweets</span> <span class='kw'>=</span> <span class='fl'>20</span>,
-  <span class='kw'>dir</span> <span class='kw'>=</span> <span class='st'>"."</span>,
-  <span class='kw'>tweets_file</span> <span class='kw'>=</span> <span class='st'>"tweets_rspatial.rds"</span>,
-  <span class='kw'>complete_tweets_file</span> <span class='kw'>=</span> <span class='st'>"complete_tweets_rspatial.rds"</span>,
-  <span class='kw'>log</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>logfile</span> <span class='kw'>=</span> <span class='st'>"rtweet_console.log"</span>,
-  <span class='kw'>loop_pid_file</span> <span class='kw'>=</span> <span class='st'>"loop_pid.log"</span>,
-  <span class='kw'>token</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
-)</pre>
+    <pre class="usage"><span class='fu'>top_tweets</span>(<span class='no'>all_tweets</span>, <span class='kw'>save_dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span>(), <span class='kw'>post_tweet</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>query</th>
-      <td><p>search tweet query</p></td>
+      <th>all_tweets</th>
+      <td><p>Table of tweets to explore</p></td>
     </tr>
     <tr>
-      <th>n_tweets</th>
-      <td><p>n_tweets</p></td>
+      <th>save_dir</th>
+      <td><p>Path where to save images that will be tweet</p></td>
     </tr>
     <tr>
-      <th>dir</th>
-      <td><p>Path where everything will be saved</p></td>
-    </tr>
-    <tr>
-      <th>tweets_file</th>
-      <td><p>tweets_file path name relative to dir</p></td>
-    </tr>
-    <tr>
-      <th>complete_tweets_file</th>
-      <td><p>complete_tweets_file path name relative to dir</p></td>
-    </tr>
-    <tr>
-      <th>log</th>
-      <td><p>Logical</p></td>
-    </tr>
-    <tr>
-      <th>logfile</th>
-      <td><p>logfile path name relative to dir</p></td>
-    </tr>
-    <tr>
-      <th>loop_pid_file</th>
-      <td><p>loop_pid_file path name relative to dir</p></td>
-    </tr>
-    <tr>
-      <th>token</th>
-      <td><p>Every user should have their own Oauth (Twitter API) token.
-By default token = NULL this function looks for the path to a saved Twitter
-token via environment variables (which is what 'create_token()'
-sets up by default during initial token creation).
-For instruction on how to create a Twitter token see the tokens vignette,
-i.e., 'vignettes("auth", "rtweet")'.</p></td>
+      <th>post_tweet</th>
+      <td><p>Logical. Whether to really tweet the content</p></td>
     </tr>
     </table>
 
