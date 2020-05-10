@@ -11,6 +11,11 @@ knitr::opts_chunk$set(
   fig.path = "man/figures/README-",
   out.width = "100%"
 )
+# Copy reference/images to man/images
+# reference folder is required to work with pkgdown
+if (!dir.exists("man/figures")) {dir.create("man/figures")}
+file.copy(list.files("reference/figures", full.names = TRUE),
+          "man/figures", overwrite = TRUE)
 ```
 # tweetrbot
 
@@ -54,7 +59,7 @@ to_install <- c("dplyr", "magrittr", "rtweet")
 ## Example
 
 ```{r, echo=FALSE, out.width="60%", fig.align='center'}
-knitr::include_graphics(path = "img/fig_tweetrbot_with_func.png")
+knitr::include_graphics(path = "reference/figures/fig_tweetrbot_with_func.png")
 ```
   
   

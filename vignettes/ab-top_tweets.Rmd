@@ -1,0 +1,44 @@
+---
+title: "ab-top_tweets"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{ab-top_tweets}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(tweetrbot)
+library(readr)
+```
+
+## Example dataset
+
+```{r}
+file <- system.file("complete_tweets_rspatial.rds", package = "tweetrbot")
+
+all_tweets <- read_rds(file)
+```
+
+## Top retweets
+
+In this vignette, I do not really post the tweet. I only retrieve its content.
+
+```{r}
+output <- top_tweets(all_tweets = all_tweets, post_tweet = FALSE)
+
+output$top_retweet
+output$number_tweets
+```
+
+```{r, output = "asis"}
+glue::glue(output$text)
+```
+

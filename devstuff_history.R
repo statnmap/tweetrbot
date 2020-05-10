@@ -11,6 +11,7 @@ usethis::use_build_ignore("timeline_rspatial.rds")
 usethis::use_git_ignore("rtweet_info.log")
 usethis::use_git_ignore("timeline_rspatial.rds")
 # usethis::create_package(".")
+usethis::use_build_ignore("reference/")
 
 # description ----
 library(desc)
@@ -62,6 +63,7 @@ tic::use_tic()
 # _Functions
 usethis::use_r("rtweet_functions")
 usethis::use_r("get_account_info")
+usethis::use_r("top_tweets")
 # _Readme
 # usethis::use_readme_rmd()
 chameleon::generate_readme_rmd(source = "github",
@@ -73,6 +75,7 @@ usethis::use_news_md()
 # _Vignette
 # thinkridentity::create_vignette_thinkr("aa-2")
 usethis::use_vignette("aa-retrieve-tweets-and-store")
+usethis::use_vignette("ab-top_tweets")
 devtools::build_vignettes()
 
 
@@ -106,7 +109,7 @@ knitr::knit("README.Rmd")
 # Dependencies ----
 # devtools::install_github("ThinkR-open/attachment")
 # attachment::att_to_description(extra.suggests = c("bookdown", "pkgdown"))
-attachment::att_to_description()
+attachment::att_amend_desc()
 # attachment::create_dependencies_file()
 
 # Description and Bibliography

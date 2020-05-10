@@ -20,6 +20,11 @@ knitr::opts_chunk$set(
 library(tweetrbot)
 ```
 
+## Retrieve credentials
+
+Follow {rtweet} guidelines to [Obtaining and using access tokens
+](https://rtweet.info/articles/auth.html).
+
 ## Run the scripts to retweet a specific hashtag
 ```{r setup, eval=FALSE}
 # Run

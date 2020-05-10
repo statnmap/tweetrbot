@@ -7,3 +7,6 @@
 ^rtweet_info\.log$
 ^timeline_rspatial\.rds$
 ^\.github$
+^doc$
+^Meta$
+^reference$

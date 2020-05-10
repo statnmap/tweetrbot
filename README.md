@@ -48,7 +48,7 @@ to_install <- c("dplyr", "magrittr", "rtweet")
 
 ## Example
 
-<img src="img/fig_tweetrbot_with_func.png" width="60%" style="display: block; margin: auto;" />
+<img src="reference/figures/fig_tweetrbot_with_func.png" width="60%" style="display: block; margin: auto;" />
 
 ``` r
 library(tweetrbot)

@@ -14,11 +14,16 @@ URL: https://github.com/statnmap/tweetrbot
 BugReports: https://github.com/statnmap/tweetrbot/issues
 Imports: 
     dplyr,
+    ggplot2,
+    glue,
+    lubridate,
     magrittr,
     ps,
-    rtweet
+    rtweet,
+    stats
 Suggests: 
     knitr,
+    readr,
     rmarkdown
 VignetteBuilder: 
     knitr
