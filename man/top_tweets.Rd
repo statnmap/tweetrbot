@@ -4,7 +4,13 @@
 \alias{top_tweets}
 \title{Create a tweet for top retweets}
 \usage{
-top_tweets(all_tweets, save_dir = tempdir(), post_tweet = TRUE)
+top_tweets(
+  all_tweets,
+  save_dir = tempdir(),
+  post_tweet = TRUE,
+  top_number = 5,
+  hashtag = "rspatial"
+)
 }
 \arguments{
 \item{all_tweets}{Table of tweets to explore}
@@ -12,6 +18,10 @@ top_tweets(all_tweets, save_dir = tempdir(), post_tweet = TRUE)
 \item{save_dir}{Path where to save images that will be tweet}
 
 \item{post_tweet}{Logical. Whether to really tweet the content}
+
+\item{top_number}{Numeric. Number of best retweeted tweets to show on the graph}
+
+\item{hashtag}{Character. Which Twitter hashtag is followed}
 }
 \description{
 Create a tweet for top retweets

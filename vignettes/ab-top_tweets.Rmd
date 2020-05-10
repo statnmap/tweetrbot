@@ -32,7 +32,7 @@ all_tweets <- read_rds(file)
 In this vignette, I do not really post the tweet. I only retrieve its content.
 
 ```{r}
-output <- top_tweets(all_tweets = all_tweets, post_tweet = FALSE)
+output <- top_tweets(all_tweets = all_tweets, post_tweet = FALSE, top_number = 5)
 
 output$top_retweet
 output$number_tweets

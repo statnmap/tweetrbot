@@ -3,6 +3,8 @@
 #' @param all_tweets Table of tweets to explore
 #' @param save_dir Path where to save images that will be tweet
 #' @param post_tweet Logical. Whether to really tweet the content
+#' @param top_number Numeric. Number of best retweeted tweets to show on the graph
+#' @param hashtag Character. Which Twitter hashtag is followed
 #'
 #' @export
 #'
@@ -13,7 +15,8 @@
 #' @importFrom rtweet post_tweet
 #' @importFrom stats reorder
 
-top_tweets <- function(all_tweets, save_dir = tempdir(), post_tweet = TRUE) {
+top_tweets <- function(all_tweets, save_dir = tempdir(), post_tweet = TRUE,
+                       top_number = 5, hashtag = "rspatial") {
 
   # Filter for the last month
   current_month <- month(today())
@@ -31,10 +34,10 @@ top_tweets <- function(all_tweets, save_dir = tempdir(), post_tweet = TRUE) {
                      screen_name, status_id)) %>%
     select(tweet_url, screen_name)
 
-  text <- glue("The {ifelse(length(most_tweet$tweet_url) > 1, paste(length(most_tweet$tweet_url), 'most'), 'most')} retweeted #rspatial of last month {ifelse(length(most_tweet$tweet_url) > 1, paste('are', paste(paste(most_tweet$tweet_url, 'by', paste0('@', most_tweet$screen_name)), collapse = ', ')), paste('is', most_tweet$tweet_url, 'by', paste0('@', most_tweet$screen_name)))}.")
+  text <- glue("The {ifelse(length(most_tweet$tweet_url) > 1, paste(length(most_tweet$tweet_url), 'most'), 'most')} retweeted #{hashtag} of last month {ifelse(length(most_tweet$tweet_url) > 1, paste('are', paste(paste(most_tweet$tweet_url, 'by', paste0('@', most_tweet$screen_name)), collapse = ', ')), paste('is', most_tweet$tweet_url, 'by', paste0('@', most_tweet$screen_name)))}.")
 
   g1 <- last_month_tweets %>%
-    top_n(5, retweet_count) %>%
+    top_n(top_number, retweet_count) %>%
     arrange(desc(retweet_count)) %>%
     mutate(name_tweet = paste(1:n(), screen_name, sep = " - ")) %>%
     ggplot() +
@@ -44,11 +47,12 @@ top_tweets <- function(all_tweets, save_dir = tempdir(), post_tweet = TRUE) {
     labs(
       x = NULL,
       y = NULL,
-      title = "Number of retweets of the 5 most retweeted #rspatial"
+      title = glue("Number of retweets of the {top_number} most retweeted #{hashtag}")
     ) +
     theme_classic()
 
-  ggsave(plot = g1, filename = file.path(save_dir, "top_retweet.jpg"), width = 7, height = 4)
+  ggsave(plot = g1, filename = file.path(save_dir, "top_retweet.jpg"),
+         width = 7, height = 4)
 
   # Timeline
   g2 <- last_month_tweets %>%
@@ -58,14 +62,15 @@ top_tweets <- function(all_tweets, save_dir = tempdir(), post_tweet = TRUE) {
     aes(x = date, y = n) +
     geom_col(fill = "#1e73be") +
     labs(
-      title = "Number of #rspatial tweets of last month",
+      title = glue("Number of #{hashtag} tweets of last month"),
       x = NULL,
       y = NULL
     ) +
     theme_classic() +
     coord_cartesian(expand = FALSE)
 
-  ggsave(plot = g2, filename = file.path(save_dir, "number_tweets.jpg"), width = 7, height = 4)
+  ggsave(plot = g2, filename = file.path(save_dir, "number_tweets.jpg"),
+         width = 7, height = 4)
 
   # Post tweet
   if (post_tweet == TRUE) {
