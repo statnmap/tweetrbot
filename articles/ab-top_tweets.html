@@ -110,12 +110,15 @@
 <p>In this vignette, I do not really post the tweet. I only retrieve its content.</p>
 <div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">output</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/top_tweets.html">top_tweets</a></span>(<span class="kw">all_tweets</span> <span class="kw">=</span> <span class="no">all_tweets</span>, <span class="kw">post_tweet</span> <span class="kw">=</span> <span class="fl">FALSE</span>, <span class="kw">top_number</span> <span class="kw">=</span> <span class="fl">5</span>)
 
-<span class="no">output</span>$<span class="no">top_retweet</span></pre></body></html></div>
-<p><img src="ab-top_tweets_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">output</span>$<span class="no">number_tweets</span></pre></body></html></div>
-<p><img src="ab-top_tweets_files/figure-html/unnamed-chunk-3-2.png" width="700"></p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="kw pkg">glue</span><span class="kw ns">::</span><span class="fu"><a href="https://glue.tidyverse.org/reference/glue.html">glue</a></span>(<span class="no">output</span>$<span class="no">text</span>)
-<span class="co">#&gt; The most retweeted #rspatial of last month is https://twitter.com/jakub_nowosad/status/1251872204012302337 by @jakub_nowosad.</span></pre></body></html></div>
+<span class="no">output</span>$<span class="no">number_contributors</span></pre></body></html></div>
+<p><img src="ab-top_tweets_files/figure-html/unnamed-chunk-3-1.png" width="50%" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">output</span>$<span class="no">top_retweet</span></pre></body></html></div>
+<p><img src="ab-top_tweets_files/figure-html/unnamed-chunk-3-2.png" width="50%" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">output</span>$<span class="no">number_tweets</span></pre></body></html></div>
+<p><img src="ab-top_tweets_files/figure-html/unnamed-chunk-3-3.png" width="50%" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">output</span>$<span class="no">text_tweet</span></pre></body></html></div>
+<p>Summary of April #rspatial: 195 tweets, 84 different contributors.</p>
+<p>Most retweeted: <a href="https://twitter.com/jakub_nowosad/status/1251872204012302337" class="uri">https://twitter.com/jakub_nowosad/status/1251872204012302337</a> by <span class="citation">@jakub_nowosad</span>.</p>
 </div>
   </div>
 

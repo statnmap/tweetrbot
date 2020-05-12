@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create a tweet for top retweets — top_tweets • tweetrbot</title>
+<title>Create a tweet for top retweets and other stats — top_tweets • tweetrbot</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Create a tweet for top retweets — top_tweets" />
-<meta property="og:description" content="Create a tweet for top retweets" />
+<meta property="og:title" content="Create a tweet for top retweets and other stats — top_tweets" />
+<meta property="og:description" content="Create a tweet for top retweets and other stats" />
 
 
 
@@ -126,13 +126,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create a tweet for top retweets</h1>
+    <h1>Create a tweet for top retweets and other stats</h1>
     <small class="dont-index">Source: <a href='https://github.com/statnmap/tweetrbot/blob/master/R/top_tweets.R'><code>R/top_tweets.R</code></a></small>
     <div class="hidden name"><code>top_tweets.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Create a tweet for top retweets</p>
+    <p>Create a tweet for top retweets and other stats</p>
     </div>
 
     <pre class="usage"><span class='fu'>top_tweets</span>(
@@ -140,7 +140,8 @@
   <span class='kw'>save_dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span>(),
   <span class='kw'>post_tweet</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>top_number</span> <span class='kw'>=</span> <span class='fl'>5</span>,
-  <span class='kw'>hashtag</span> <span class='kw'>=</span> <span class='st'>"rspatial"</span>
+  <span class='kw'>hashtag</span> <span class='kw'>=</span> <span class='st'>"rspatial"</span>,
+  <span class='kw'>fill</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"#1e73be"</span>, <span class='st'>"#BF223C"</span>, <span class='st'>"#79C698"</span>)
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -165,6 +166,12 @@
     <tr>
       <th>hashtag</th>
       <td><p>Character. Which Twitter hashtag is followed</p></td>
+    </tr>
+    <tr>
+      <th>fill</th>
+      <td><p>Vector of colors to be used in the graphics.
+Length 1 for all the same, or length 3 resp. for:
+top retweeted, tweets per day, contributors per day</p></td>
     </tr>
     </table>
 
