@@ -10,7 +10,11 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.width = 7,
+  fig.height = 5,
+  out.width = "50%",
+  fig.align = "center"
 )
 ```
 
@@ -34,11 +38,12 @@ In this vignette, I do not really post the tweet. I only retrieve its content.
 ```{r}
 output <- top_tweets(all_tweets = all_tweets, post_tweet = FALSE, top_number = 5)
 
+output$number_contributors
 output$top_retweet
 output$number_tweets
 ```
 
-```{r, output = "asis"}
-glue::glue(output$text)
+```{r, results='asis'}
+output$text_tweet
 ```
 

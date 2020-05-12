@@ -2,14 +2,15 @@
 % Please edit documentation in R/top_tweets.R
 \name{top_tweets}
 \alias{top_tweets}
-\title{Create a tweet for top retweets}
+\title{Create a tweet for top retweets and other stats}
 \usage{
 top_tweets(
   all_tweets,
   save_dir = tempdir(),
   post_tweet = TRUE,
   top_number = 5,
-  hashtag = "rspatial"
+  hashtag = "rspatial",
+  fill = c("#1e73be", "#BF223C", "#79C698")
 )
 }
 \arguments{
@@ -22,7 +23,11 @@ top_tweets(
 \item{top_number}{Numeric. Number of best retweeted tweets to show on the graph}
 
 \item{hashtag}{Character. Which Twitter hashtag is followed}
+
+\item{fill}{Vector of colors to be used in the graphics.
+Length 1 for all the same, or length 3 resp. for:
+top retweeted, tweets per day, contributors per day}
 }
 \description{
-Create a tweet for top retweets
+Create a tweet for top retweets and other stats
 }
