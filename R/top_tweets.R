@@ -64,7 +64,7 @@ top_tweets <- function(all_tweets, save_dir = tempdir(), post_tweet = TRUE,
     labs(
       x = NULL,
       y = NULL,
-      title = glue("Number of retweets of the {top_number} most retweeted #{hashtag}")
+      title = glue("Number of retweets for the {top_number} most retweeted #{hashtag}")
     ) +
     theme_classic()
 
@@ -103,7 +103,7 @@ top_tweets <- function(all_tweets, save_dir = tempdir(), post_tweet = TRUE,
     aes(x = date, y = contributors) +
     geom_col(fill = fill[3]) +
     labs(
-      title = glue("Number of unique contributors of #{hashtag} in {last_month_name}"),
+      title = glue("Number of unique contributors for #{hashtag} in {last_month_name}"),
       x = NULL,
       y = NULL
     ) +
