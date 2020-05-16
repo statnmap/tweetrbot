@@ -28,24 +28,6 @@ To install the package, you can run the following script
 remotes::install_github(repo = "statnmap/tweetrbot")
 ```
 
-In case something went wrong, you may want to install dependencies
-before using:
-
-``` r
-# No Remotes ----
-# Attachments ----
-to_install <- c("dplyr", "magrittr", "rtweet")
-  for (i in to_install) {
-    message(paste("looking for ", i))
-    if (!requireNamespace(i)) {
-      message(paste("     installing", i))
-      install.packages(i)
-    }
-  }
-```
-
-<!-- install: end -->
-
 ## Example
 
 <img src="reference/figures/fig_tweetrbot_with_func.png" width="60%" style="display: block; margin: auto;" />
@@ -75,4 +57,14 @@ retweet_and_update(dir = ".", n_tweets = 20, n_limit = 3, sys_sleep = 600, debug
 
 ``` r
 get_account_info(user = "talk_rspatial")
+```
+
+### Post the most retweeted tweet of the month
+
+Get the database gathered with `get_and_store()` and tweet the top of
+the month using `top_tweets()`.
+
+``` r
+all_tweets <- readRDS("complete_tweets_rspatial.rds")
+top_tweets(all_tweets = all_tweets, post_tweet = TRUE, top_number = 5)
 ```
