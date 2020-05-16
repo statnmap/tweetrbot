@@ -8,6 +8,12 @@
 #' @param fill Vector of colors to be used in the graphics.
 #'  Length 1 for all the same, or length 3 resp. for:
 #'  top retweeted, tweets per day, contributors per day
+#' @param token Every user should have their own Oauth (Twitter API) token.
+#'  By default token = NULL this function looks for the path to a saved Twitter
+#'  token via environment variables (which is what 'create_token()'
+#'  sets up by default during initial token creation).
+#'  For instruction on how to create a Twitter token see the tokens vignette,
+#'  i.e., 'vignettes("auth", "rtweet")'.
 #'
 #' @export
 #'
@@ -20,7 +26,8 @@
 
 top_tweets <- function(all_tweets, save_dir = tempdir(), post_tweet = TRUE,
                        top_number = 5, hashtag = "rspatial",
-                       fill = c("#1e73be", "#BF223C", "#79C698")) {
+                       fill = c("#1e73be", "#BF223C", "#79C698"),
+                       token = NULL) {
 
   if (length(fill) != 3) {fill <- rep(fill[1], 3)}
 
@@ -114,7 +121,8 @@ top_tweets <- function(all_tweets, save_dir = tempdir(), post_tweet = TRUE,
       status = text_tweet,
       media = c(file.path(save_dir, "number_contributors.jpg"),
                 file.path(save_dir, "top_retweet.jpg"),
-                file.path(save_dir, "number_tweets.jpg")))
+                file.path(save_dir, "number_tweets.jpg")),
+      token = token)
   }
 
   list(

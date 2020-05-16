@@ -12,7 +12,8 @@ Description: Functions to allow retrieve, store and retweet
 License: MIT + file LICENSE
 URL: https://github.com/statnmap/tweetrbot
 BugReports: https://github.com/statnmap/tweetrbot/issues
-Depends: R (>= 3.5)
+Depends: 
+    R (>= 3.5)
 Imports: 
     dplyr,
     ggplot2,

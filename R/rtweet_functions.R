@@ -55,7 +55,7 @@ get_and_store <- function(
 
   new_tweets <- search_tweets(
     query, n = n_tweets, include_rts = FALSE,
-    token = NULL
+    token = token
   ) %>%
     mutate(
       retweet_order = NA_real_,
@@ -75,7 +75,7 @@ get_and_store <- function(
           any(is.na(bot_retweet)) ~ NA, # failed retweet
           any(bot_retweet == TRUE) ~ TRUE, # already retweet
           all(bot_retweet == FALSE) ~ FALSE)) %>% # not retweet
-        ungroup() %>%        
+        ungroup() %>%
         distinct(status_id, .keep_all = TRUE)
   } else {
     newold_tweets <- new_tweets
@@ -164,7 +164,7 @@ retweet_and_update <- function(
 		  file.remove(file.path(dir, loop_pid_file))
 		  file.create(file.path(dir, loop_pid_file))
 		} else if (!ps_name(test_pid) %in% c("R", "Rscript")) {
-		  # Not R process       
+		  # Not R process
 		  file.remove(file.path(dir, loop_pid_file))
 		  file.create(file.path(dir, loop_pid_file))
 		} else if (!ps_is_running(test_pid)) {
@@ -181,7 +181,7 @@ retweet_and_update <- function(
       return(NULL)
     }
   }
-  
+
   # For logs
   if (isTRUE(log)) {
     sink(file = file.path(dir, logfile), append = FALSE)
@@ -275,7 +275,7 @@ retweet_and_update <- function(
           any(is.na(bot_retweet)) ~ NA, # failed retweet
           any(bot_retweet == TRUE) ~ TRUE, # already retweet
           all(bot_retweet == FALSE) ~ FALSE)) %>% # not retweet
-        ungroup() %>%        
+        ungroup() %>%
         distinct(status_id, .keep_all = TRUE)
       # Remove data from the to-tweets database if number is bigger than 'n_limit' and already retweeted
       if (nrow(updated_tweets) > (n_tweets * n_limit)) {
