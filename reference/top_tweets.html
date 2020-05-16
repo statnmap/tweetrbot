@@ -141,7 +141,8 @@
   <span class='kw'>post_tweet</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>top_number</span> <span class='kw'>=</span> <span class='fl'>5</span>,
   <span class='kw'>hashtag</span> <span class='kw'>=</span> <span class='st'>"rspatial"</span>,
-  <span class='kw'>fill</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"#1e73be"</span>, <span class='st'>"#BF223C"</span>, <span class='st'>"#79C698"</span>)
+  <span class='kw'>fill</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"#1e73be"</span>, <span class='st'>"#BF223C"</span>, <span class='st'>"#79C698"</span>),
+  <span class='kw'>token</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -172,6 +173,15 @@
       <td><p>Vector of colors to be used in the graphics.
 Length 1 for all the same, or length 3 resp. for:
 top retweeted, tweets per day, contributors per day</p></td>
+    </tr>
+    <tr>
+      <th>token</th>
+      <td><p>Every user should have their own Oauth (Twitter API) token.
+By default token = NULL this function looks for the path to a saved Twitter
+token via environment variables (which is what 'create_token()'
+sets up by default during initial token creation).
+For instruction on how to create a Twitter token see the tokens vignette,
+i.e., 'vignettes("auth", "rtweet")'.</p></td>
     </tr>
     </table>
 
