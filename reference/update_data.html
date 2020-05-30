@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create a tweet for top retweets and other stats — top_tweets • tweetrbot</title>
+<title>Update a tweet dataset with last information — update_data • tweetrbot</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Create a tweet for top retweets and other stats — top_tweets" />
-<meta property="og:description" content="Create a tweet for top retweets and other stats" />
+<meta property="og:title" content="Update a tweet dataset with last information — update_data" />
+<meta property="og:description" content="Update information of all statuses listed. At most, the last 90000." />
 
 
 
@@ -126,64 +126,56 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create a tweet for top retweets and other stats</h1>
-    <small class="dont-index">Source: <a href='https://github.com/statnmap/tweetrbot/blob/master/R/top_tweets.R'><code>R/top_tweets.R</code></a></small>
-    <div class="hidden name"><code>top_tweets.Rd</code></div>
+    <h1>Update a tweet dataset with last information</h1>
+    <small class="dont-index">Source: <a href='https://github.com/statnmap/tweetrbot/blob/master/R/update_data.R'><code>R/update_data.R</code></a></small>
+    <div class="hidden name"><code>update_data.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Create a tweet for top retweets and other stats</p>
+    <p>Update information of all statuses listed. At most, the last 90000.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>top_tweets</span>(
-  <span class='no'>all_tweets</span>,
-  <span class='kw'>save_dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span>(),
-  <span class='kw'>post_tweet</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>top_number</span> <span class='kw'>=</span> <span class='fl'>5</span>,
-  <span class='kw'>hashtag</span> <span class='kw'>=</span> <span class='st'>"rspatial"</span>,
-  <span class='kw'>fill</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"#1e73be"</span>, <span class='st'>"#BF223C"</span>, <span class='st'>"#79C698"</span>),
+    <pre class="usage"><span class='fu'>update_data</span>(
+  <span class='no'>x</span>,
+  <span class='no'>path</span>,
+  <span class='no'>statuses</span>,
   <span class='kw'>token</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>the_month_name</span>
+  <span class='kw'>return_all</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>all_tweets</th>
-      <td><p>Table of tweets to explore</p></td>
+      <th>x</th>
+      <td><p>dataset to update. Not used if path is set.</p></td>
     </tr>
     <tr>
-      <th>save_dir</th>
-      <td><p>Path where to save images that will be tweet</p></td>
+      <th>path</th>
+      <td><p>Path to .rds file with saved dataset</p></td>
     </tr>
     <tr>
-      <th>post_tweet</th>
-      <td><p>Logical. Whether to really tweet the content</p></td>
-    </tr>
-    <tr>
-      <th>top_number</th>
-      <td><p>Numeric. Number of best retweeted tweets to show on the graph</p></td>
-    </tr>
-    <tr>
-      <th>hashtag</th>
-      <td><p>Character. Which Twitter hashtag is followed</p></td>
-    </tr>
-    <tr>
-      <th>fill</th>
-      <td><p>Vector of colors to be used in the graphics.
-Length 1 for all the same, or length 3 resp. for:
-top retweeted, tweets per day, contributors per day</p></td>
+      <th>statuses</th>
+      <td><p>Tweet statuses to update</p></td>
     </tr>
     <tr>
       <th>token</th>
-      <td><p>OAuth token. By default <code>token = NULL</code> fetches a
-non-exhausted token from an environment variable tokens.</p></td>
+      <td><p>Every user should have their own Oauth (Twitter API) token. By
+default <code>token = NULL</code> this function looks for the path to a saved
+Twitter token via environment variables (which is what `create_token()`
+sets up by default during initial token creation). For instruction on how
+to create a Twitter token see the tokens vignette, i.e.,
+`vignettes("auth", "rtweet")` or see <code>?tokens</code>.</p></td>
     </tr>
     <tr>
-      <th>the_month_name</th>
-      <td><p>Character. Month name that appear on graph.
-Default to last month name.</p></td>
+      <th>return_all</th>
+      <td><p>Logical. TRUE returns the complete dataset,
+FALSE returns data in statuses list (default).</p></td>
+    </tr>
+    <tr>
+      <th>overwrite</th>
+      <td><p>Logical. Whether to overwrite rds file with updated data</p></td>
     </tr>
     </table>
 

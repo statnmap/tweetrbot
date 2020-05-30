@@ -100,23 +100,40 @@
 <div id="example-dataset" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example-dataset" class="anchor"></a>Example dataset</h2>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">file</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"complete_tweets_rspatial.rds"</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"tweetrbot"</span>)
+<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">rds_file</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"complete_tweets_rspatial.rds"</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"tweetrbot"</span>)
 
-<span class="no">all_tweets</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_rds.html">read_rds</a></span>(<span class="no">file</span>)</pre></body></html></div>
+<span class="no">all_tweets</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_rds.html">read_rds</a></span>(<span class="no">rds_file</span>)</pre></body></html></div>
 </div>
 <div id="top-retweets" class="section level2">
 <h2 class="hasAnchor">
 <a href="#top-retweets" class="anchor"></a>Top retweets</h2>
 <p>In this vignette, I do not really post the tweet. I only retrieve its content.</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">output</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/top_tweets.html">top_tweets</a></span>(<span class="kw">all_tweets</span> <span class="kw">=</span> <span class="no">all_tweets</span>, <span class="kw">post_tweet</span> <span class="kw">=</span> <span class="fl">FALSE</span>, <span class="kw">top_number</span> <span class="kw">=</span> <span class="fl">5</span>)
-
-<span class="no">output</span>$<span class="no">number_contributors</span></pre></body></html></div>
-<p><img src="ab-top_tweets_files/figure-html/unnamed-chunk-3-1.png" width="50%" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">output</span>$<span class="no">top_retweet</span></pre></body></html></div>
-<p><img src="ab-top_tweets_files/figure-html/unnamed-chunk-3-2.png" width="50%" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">output</span>$<span class="no">number_tweets</span></pre></body></html></div>
-<p><img src="ab-top_tweets_files/figure-html/unnamed-chunk-3-3.png" width="50%" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">output</span>$<span class="no">text_tweet</span></pre></body></html></div>
+<ul>
+<li>Update stored tweets information</li>
+</ul>
+<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="co"># get last month data</span>
+<span class="co"># In this saved dataset, last month is April</span>
+<span class="no">last_month_tweets</span> <span class="kw">&lt;-</span> <span class="no">all_tweets</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/filter_month.html">filter_month</a></span>(<span class="kw">the_month</span> <span class="kw">=</span> <span class="fl">4</span>)
+<span class="co"># update rds data (not here for the example) and return last_month updated</span>
+<span class="no">last_month_updated</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/update_data.html">update_data</a></span>(
+  <span class="kw">path</span> <span class="kw">=</span> <span class="no">rds_file</span>,
+  <span class="kw">statuses</span> <span class="kw">=</span> <span class="no">last_month_tweets</span>$<span class="no">status_id</span>,
+  <span class="kw">return_all</span> <span class="kw">=</span> <span class="fl">FALSE</span>,
+  <span class="kw">overwrite</span> <span class="kw">=</span> <span class="fl">FALSE</span>)</pre></body></html></div>
+<ul>
+<li>Find top tweets</li>
+</ul>
+<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">output</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/top_tweets.html">top_tweets</a></span>(<span class="kw">all_tweets</span> <span class="kw">=</span> <span class="no">last_month_updated</span>, <span class="kw">post_tweet</span> <span class="kw">=</span> <span class="fl">FALSE</span>, <span class="kw">top_number</span> <span class="kw">=</span> <span class="fl">5</span>)</pre></body></html></div>
+<ul>
+<li>Show stats</li>
+</ul>
+<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">output</span>$<span class="no">number_contributors</span></pre></body></html></div>
+<p><img src="ab-top_tweets_files/figure-html/unnamed-chunk-6-1.png" width="50%" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">output</span>$<span class="no">top_retweet</span></pre></body></html></div>
+<p><img src="ab-top_tweets_files/figure-html/unnamed-chunk-6-2.png" width="50%" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">output</span>$<span class="no">number_tweets</span></pre></body></html></div>
+<p><img src="ab-top_tweets_files/figure-html/unnamed-chunk-6-3.png" width="50%" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">output</span>$<span class="no">text_tweet</span></pre></body></html></div>
 <p>Summary of April #rspatial: 195 tweets, 84 different contributors.</p>
 <p>Most retweeted: <a href="https://twitter.com/jakub_nowosad/status/1251872204012302337" class="uri">https://twitter.com/jakub_nowosad/status/1251872204012302337</a> by <span class="citation">@jakub_nowosad</span>.</p>
 </div>
