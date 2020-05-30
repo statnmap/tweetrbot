@@ -65,6 +65,14 @@ Get the database gathered with `get_and_store()` and tweet the top of
 the month using `top_tweets()`.
 
 ``` r
-all_tweets <- readRDS("complete_tweets_rspatial.rds")
-top_tweets(all_tweets = all_tweets, post_tweet = TRUE, top_number = 5)
+rds_file <- "complete_tweets_rspatial.rds"
+all_tweets <- readRDS(rds_file)
+# filter on last month
+last_month_tweets <- all_tweets %>% filter_month(the_month = 4)
+# update last month
+last_month_updated <- update_data(
+  path = rds_file, 
+  statuses = last_month_tweets$status_id)
+# Get stats of last month tweets
+top_tweets(all_tweets = last_month_updated, post_tweet = TRUE, top_number = 5)
 ```

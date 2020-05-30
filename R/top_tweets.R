@@ -8,17 +8,14 @@
 #' @param fill Vector of colors to be used in the graphics.
 #'  Length 1 for all the same, or length 3 resp. for:
 #'  top retweeted, tweets per day, contributors per day
-#' @param token Every user should have their own Oauth (Twitter API) token.
-#'  By default token = NULL this function looks for the path to a saved Twitter
-#'  token via environment variables (which is what 'create_token()'
-#'  sets up by default during initial token creation).
-#'  For instruction on how to create a Twitter token see the tokens vignette,
-#'  i.e., 'vignettes("auth", "rtweet")'.
+#' @param the_month_name Character. Month name that appear on graph.
+#' Default to last month name.
+#' @inheritParams rtweet::post_tweet
 #'
 #' @export
 #'
-#' @importFrom lubridate month today ymd_hms as_date
-#' @importFrom dplyr filter mutate top_n select arrange count group_by summarise
+#' @importFrom lubridate as_date
+#' @importFrom dplyr mutate top_n select arrange count group_by summarise
 #' @importFrom glue glue
 #' @importFrom ggplot2 ggplot aes geom_col coord_flip labs theme_classic ggsave coord_cartesian
 #' @importFrom rtweet post_tweet
@@ -27,21 +24,18 @@
 top_tweets <- function(all_tweets, save_dir = tempdir(), post_tweet = TRUE,
                        top_number = 5, hashtag = "rspatial",
                        fill = c("#1e73be", "#BF223C", "#79C698"),
-                       token = NULL) {
+                       token = NULL, the_month_name) {
 
   if (length(fill) != 3) {fill <- rep(fill[1], 3)}
 
   # Filter for the last month
-  current_month <- month(today())
-  last_month <- ifelse(current_month == 1, 12, current_month - 1)
-  last_month_name <- month.name[last_month]
-
-  last_month_tweets <- all_tweets %>%
-    mutate(created_at = ymd_hms(created_at)) %>%
-    filter(month(created_at) == last_month & is_retweet == FALSE)
+  if (missing(the_month_name)) {
+    the_month_name <- last_month()$last_month_name
+  }
+  # last_month_tweets <- filter_month(all_tweets)
 
   # The most retweet
-  most_tweet <- last_month_tweets %>%
+  most_tweet <- all_tweets %>%
     top_n(1, retweet_count) %>%
     mutate(tweet_url =
              sprintf("https://twitter.com/%s/status/%s",
@@ -53,7 +47,7 @@ top_tweets <- function(all_tweets, save_dir = tempdir(), post_tweet = TRUE,
     "Most retweeted:",
     " {paste(paste(most_tweet$tweet_url, 'by', paste0('@', most_tweet$screen_name)), collapse = ', ')}.")
 
-  g1 <- last_month_tweets %>%
+  g1 <- all_tweets %>%
     top_n(top_number, retweet_count) %>%
     arrange(desc(retweet_count)) %>%
     mutate(name_tweet = paste(1:n(), screen_name, sep = " - ")) %>%
@@ -72,14 +66,14 @@ top_tweets <- function(all_tweets, save_dir = tempdir(), post_tweet = TRUE,
          width = 7, height = 4)
 
   # Timeline
-  g2 <- last_month_tweets %>%
+  g2 <- all_tweets %>%
     mutate(date = as_date(created_at)) %>%
     count(date) %>%
     ggplot() +
     aes(x = date, y = n) +
     geom_col(fill = fill[2]) +
     labs(
-      title = glue("Number of #{hashtag} tweets in {last_month_name}"),
+      title = glue("Number of #{hashtag} tweets in {the_month_name}"),
       x = NULL,
       y = NULL
     ) +
@@ -90,12 +84,12 @@ top_tweets <- function(all_tweets, save_dir = tempdir(), post_tweet = TRUE,
          width = 7, height = 4)
 
   # Nombre total de contributeurs par jour
-  n_tweets <- nrow(last_month_tweets)
-  n_contributors <- length(unique(last_month_tweets$screen_name))
-  text_contributors <- glue("Summary of {last_month_name} #{hashtag}: {n_tweets} tweets, {n_contributors} different contributors.")
+  n_tweets <- nrow(all_tweets)
+  n_contributors <- length(unique(all_tweets$screen_name))
+  text_contributors <- glue("Summary of {the_month_name} #{hashtag}: {n_tweets} tweets, {n_contributors} different contributors.")
 
   # > graph
-  g3 <- last_month_tweets %>%
+  g3 <- all_tweets %>%
     mutate(date = as_date(created_at)) %>%
     group_by(date) %>%
     summarise(contributors = length(unique(screen_name))) %>%
@@ -103,7 +97,7 @@ top_tweets <- function(all_tweets, save_dir = tempdir(), post_tweet = TRUE,
     aes(x = date, y = contributors) +
     geom_col(fill = fill[3]) +
     labs(
-      title = glue("Number of unique contributors for #{hashtag} in {last_month_name}"),
+      title = glue("Number of unique contributors for #{hashtag} in {the_month_name}"),
       x = NULL,
       y = NULL
     ) +

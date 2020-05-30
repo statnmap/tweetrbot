@@ -26,22 +26,47 @@ library(readr)
 ## Example dataset
 
 ```{r}
-file <- system.file("complete_tweets_rspatial.rds", package = "tweetrbot")
+rds_file <- system.file("complete_tweets_rspatial.rds", package = "tweetrbot")
 
-all_tweets <- read_rds(file)
+all_tweets <- read_rds(rds_file)
 ```
 
 ## Top retweets
 
 In this vignette, I do not really post the tweet. I only retrieve its content.
 
-```{r}
-output <- top_tweets(all_tweets = all_tweets, post_tweet = FALSE, top_number = 5)
+- Update stored tweets information
 
+```{r, eval=FALSE}
+# get last month data
+# In this saved dataset, last month is April
+last_month_tweets <- all_tweets %>% filter_month(the_month = 4)
+# update rds data (not here for the example) and return last_month updated
+last_month_updated <- update_data(
+  path = rds_file, 
+  statuses = last_month_tweets$status_id, 
+  return_all = FALSE,
+  overwrite = FALSE)
+```
+
+- Find top tweets
+```{r, eval=FALSE}
+output <- top_tweets(all_tweets = last_month_updated, post_tweet = FALSE, top_number = 5)
+```
+```{r, eval=TRUE, echo=FALSE}
+# Data not really updated in this vignette because would need Twitter credentials
+output <- all_tweets %>% 
+  filter_month(the_month = 4) %>% 
+  top_tweets(post_tweet = FALSE, top_number = 5)
+```
+
+- Show stats
+```{r}
 output$number_contributors
 output$top_retweet
 output$number_tweets
 ```
+
 
 ```{r, results='asis'}
 output$text_tweet

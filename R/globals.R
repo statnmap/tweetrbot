@@ -4,6 +4,8 @@ globalVariables(
     # top_tweets()
     "created_at", "current_month", "retweet_count", "screen_name",
     "status_id", "name_tweet", "date", "n", "is_retweet", "tweet_url",
-    "contributors"
+    "contributors",
+    # filter_month
+    "all_tweets"
   ))
 )

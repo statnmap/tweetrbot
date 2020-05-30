@@ -11,7 +11,8 @@ top_tweets(
   top_number = 5,
   hashtag = "rspatial",
   fill = c("#1e73be", "#BF223C", "#79C698"),
-  token = NULL
+  token = NULL,
+  the_month_name
 )
 }
 \arguments{
@@ -29,12 +30,11 @@ top_tweets(
 Length 1 for all the same, or length 3 resp. for:
 top retweeted, tweets per day, contributors per day}
 
-\item{token}{Every user should have their own Oauth (Twitter API) token.
-By default token = NULL this function looks for the path to a saved Twitter
-token via environment variables (which is what 'create_token()'
-sets up by default during initial token creation).
-For instruction on how to create a Twitter token see the tokens vignette,
-i.e., 'vignettes("auth", "rtweet")'.}
+\item{token}{OAuth token. By default \code{token = NULL} fetches a
+non-exhausted token from an environment variable tokens.}
+
+\item{the_month_name}{Character. Month name that appear on graph.
+Default to last month name.}
 }
 \description{
 Create a tweet for top retweets and other stats
