@@ -4,12 +4,14 @@
 \alias{filter_month}
 \title{Filter dataset for last month tweets only}
 \usage{
-filter_month(x, the_month)
+filter_month(x, the_month, the_year)
 }
 \arguments{
 \item{x}{Dataset of tweets}
 
 \item{the_month}{Number of the month. Default to last month.}
+
+\item{the_year}{Year to filter. Default to current year.}
 }
 \description{
 Filter dataset for last month tweets only

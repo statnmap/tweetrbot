@@ -62,6 +62,11 @@ get_and_store(query = "#rspatial", n_tweets = 20, dir = ".")
 ## Tweet regularly and update the table stored on the drive
 retweet_and_update(dir = ".", n_tweets = 20, n_limit = 3, sys_sleep = 600, debug = TRUE)
 ```
+```{r, echo=FALSE}
+rds_file <- system.file("complete_tweets_rspatial.rds", package = "tweetrbot")
+all_tweets <- readRDS(rds_file)
+all_tweets
+```
 
 ### Run the script to retrieve your user information
 ```{r, eval=FALSE}
@@ -73,10 +78,10 @@ get_account_info(user = "talk_rspatial")
 Get the database gathered with `get_and_store()` and tweet the top of the month using `top_tweets()`.  
 
 ```{r, eval=FALSE}
-rds_file <- "complete_tweets_rspatial.rds"
+rds_file <- system.file("complete_tweets_rspatial.rds", package = "tweetrbot")
 all_tweets <- readRDS(rds_file)
 # filter on last month
-last_month_tweets <- all_tweets %>% filter_month(the_month = 4)
+last_month_tweets <- all_tweets %>% filter_month(the_month = 4, the_year = 2020)
 # update last month
 last_month_updated <- update_data(
   path = rds_file, 
@@ -84,4 +89,10 @@ last_month_updated <- update_data(
 # Get stats of last month tweets
 top_tweets(all_tweets = last_month_updated, post_tweet = TRUE, top_number = 5)
 ```
-
+```{r, echo=FALSE, out.width="45%"}
+output <- all_tweets %>% 
+  filter_month(the_month = 4, the_year = 2020) %>% 
+  top_tweets(post_tweet = FALSE, top_number = 5)
+output$number_tweets
+output$number_contributors
+```

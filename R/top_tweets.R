@@ -33,10 +33,14 @@ top_tweets <- function(all_tweets, save_dir = tempdir(), post_tweet = TRUE,
     the_month_name <- last_month()$last_month_name
   }
   # last_month_tweets <- filter_month(all_tweets)
+  all_tweets_rq <- all_tweets %>%
+    mutate(
+      quote_count = ifelse(is.na(quote_count), 0, quote_count),
+      retweet_quote_count = retweet_count + quote_count)
 
   # The most retweet
-  most_tweet <- all_tweets %>%
-    top_n(1, retweet_count) %>%
+  most_tweet <- all_tweets_rq %>%
+    top_n(1, retweet_quote_count) %>%
     mutate(tweet_url =
              sprintf("https://twitter.com/%s/status/%s",
                      screen_name, status_id)) %>%
@@ -47,18 +51,18 @@ top_tweets <- function(all_tweets, save_dir = tempdir(), post_tweet = TRUE,
     "Most retweeted:",
     " {paste(paste(most_tweet$tweet_url, 'by', paste0('@', most_tweet$screen_name)), collapse = ', ')}.")
 
-  g1 <- all_tweets %>%
-    top_n(top_number, retweet_count) %>%
-    arrange(desc(retweet_count)) %>%
+  g1 <- all_tweets_rq %>%
+    top_n(top_number, retweet_quote_count) %>%
+    arrange(desc(retweet_quote_count)) %>%
     mutate(name_tweet = paste(1:n(), screen_name, sep = " - ")) %>%
     ggplot() +
-    aes(x = reorder(name_tweet, retweet_count), y = retweet_count) +
+    aes(x = reorder(name_tweet, retweet_quote_count), y = retweet_quote_count) +
     geom_col(fill = fill[1]) +
     coord_flip(expand = FALSE) +
     labs(
       x = NULL,
       y = NULL,
-      title = glue("Number of retweets for the {top_number} most retweeted #{hashtag}")
+      title = glue("Number of retweets+quotes for the {top_number} most retweeted #{hashtag}")
     ) +
     theme_classic()
 

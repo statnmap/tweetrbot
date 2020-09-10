@@ -27,7 +27,6 @@ library(readr)
 
 ```{r}
 rds_file <- system.file("complete_tweets_rspatial.rds", package = "tweetrbot")
-
 all_tweets <- read_rds(rds_file)
 ```
 
@@ -40,13 +39,14 @@ In this vignette, I do not really post the tweet. I only retrieve its content.
 ```{r, eval=FALSE}
 # get last month data
 # In this saved dataset, last month is April
-last_month_tweets <- all_tweets %>% filter_month(the_month = 4)
-# update rds data (not here for the example) and return last_month updated
+last_month_tweets <- all_tweets %>% filter_month(the_month = 4, the_year = 2020)
+# update rds data (not run in this example to not modify raw data)
+#  and return last_month updated
 last_month_updated <- update_data(
   path = rds_file, 
   statuses = last_month_tweets$status_id, 
   return_all = FALSE,
-  overwrite = FALSE)
+  overwrite = TRUE)
 ```
 
 - Find top tweets
@@ -56,7 +56,7 @@ output <- top_tweets(all_tweets = last_month_updated, post_tweet = FALSE, top_nu
 ```{r, eval=TRUE, echo=FALSE}
 # Data not really updated in this vignette because would need Twitter credentials
 output <- all_tweets %>% 
-  filter_month(the_month = 4) %>% 
+  filter_month(the_month = 4, the_year = 2020) %>% 
   top_tweets(post_tweet = FALSE, top_number = 5)
 ```
 
