@@ -82,7 +82,7 @@
 
       
 
-      </header><div class="row">
+      </header><script src="aa-retrieve-tweets-and-store_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>aa-retrieve-tweets-and-store</h1>
@@ -95,7 +95,9 @@
 
     
     
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tweetrbot</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/statnmap/tweetrbot">tweetrbot</a></span>)
+</pre></div>
 <div id="retrieve-credentials" class="section level2">
 <h2 class="hasAnchor">
 <a href="#retrieve-credentials" class="anchor"></a>Retrieve credentials</h2>
@@ -104,14 +106,18 @@
 <div id="run-the-scripts-to-retweet-a-specific-hashtag" class="section level2">
 <h2 class="hasAnchor">
 <a href="#run-the-scripts-to-retweet-a-specific-hashtag" class="anchor"></a>Run the scripts to retweet a specific hashtag</h2>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="co"># Run</span>
-<span class="fu"><a href="../reference/get_and_store.html">get_and_store</a></span>(<span class="kw">query</span> <span class="kw">=</span> <span class="st">"#rspatial"</span>, <span class="kw">n_tweets</span> <span class="kw">=</span> <span class="fl">20</span>)
-<span class="fu"><a href="../reference/retweet_and_update.html">retweet_and_update</a></span>(<span class="kw">n_tweets</span> <span class="kw">=</span> <span class="fl">20</span>, <span class="kw">n_limit</span> <span class="kw">=</span> <span class="fl">3</span>, <span class="kw">sys_sleep</span> <span class="kw">=</span> <span class="fl">600</span>, <span class="kw">debug</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="co"># Run</span>
+<span class="fu"><a href="../reference/get_and_store.html">get_and_store</a></span>(query = <span class="st">"#rspatial"</span>, n_tweets = <span class="fl">20</span>)
+<span class="fu"><a href="../reference/retweet_and_update.html">retweet_and_update</a></span>(n_tweets = <span class="fl">20</span>, n_limit = <span class="fl">3</span>, sys_sleep = <span class="fl">600</span>, debug = <span class="fl">TRUE</span>)
+</pre></div>
 </div>
 <div id="run-the-script-to-retrieve-your-user-information" class="section level2">
 <h2 class="hasAnchor">
 <a href="#run-the-script-to-retrieve-your-user-information" class="anchor"></a>Run the script to retrieve your user information</h2>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="fu"><a href="../reference/get_account_info.html">get_account_info</a></span>(<span class="kw">user</span> <span class="kw">=</span> <span class="st">"talk_rspatial"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="fu"><a href="../reference/get_account_info.html">get_account_info</a></span>(user = <span class="st">"talk_rspatial"</span>)
+</pre></div>
 </div>
   </div>
 
@@ -130,7 +136,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.9000.</p>
 </div>
 
       </footer>

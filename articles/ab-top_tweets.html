@@ -82,7 +82,7 @@
 
       
 
-      </header><div class="row">
+      </header><script src="ab-top_tweets_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>ab-top_tweets</h1>
@@ -95,14 +95,17 @@
 
     
     
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tweetrbot</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">readr</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/statnmap/tweetrbot">tweetrbot</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="http://readr.tidyverse.org">readr</a></span>)
+</pre></div>
 <div id="example-dataset" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example-dataset" class="anchor"></a>Example dataset</h2>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">rds_file</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"complete_tweets_rspatial.rds"</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"tweetrbot"</span>)
-
-<span class="no">all_tweets</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_rds.html">read_rds</a></span>(<span class="no">rds_file</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="kw">rds_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"complete_tweets_rspatial.rds"</span>, package = <span class="st">"tweetrbot"</span>)
+<span class="kw">all_tweets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_rds.html">read_rds</a></span>(<span class="kw">rds_file</span>)
+</pre></div>
 </div>
 <div id="top-retweets" class="section level2">
 <h2 class="hasAnchor">
@@ -111,30 +114,43 @@
 <ul>
 <li>Update stored tweets information</li>
 </ul>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="co"># get last month data</span>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="co"># get last month data</span>
 <span class="co"># In this saved dataset, last month is April</span>
-<span class="no">last_month_tweets</span> <span class="kw">&lt;-</span> <span class="no">all_tweets</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/filter_month.html">filter_month</a></span>(<span class="kw">the_month</span> <span class="kw">=</span> <span class="fl">4</span>)
-<span class="co"># update rds data (not here for the example) and return last_month updated</span>
-<span class="no">last_month_updated</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/update_data.html">update_data</a></span>(
-  <span class="kw">path</span> <span class="kw">=</span> <span class="no">rds_file</span>,
-  <span class="kw">statuses</span> <span class="kw">=</span> <span class="no">last_month_tweets</span>$<span class="no">status_id</span>,
-  <span class="kw">return_all</span> <span class="kw">=</span> <span class="fl">FALSE</span>,
-  <span class="kw">overwrite</span> <span class="kw">=</span> <span class="fl">FALSE</span>)</pre></body></html></div>
+<span class="kw">last_month_tweets</span> <span class="op">&lt;-</span> <span class="kw">all_tweets</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/filter_month.html">filter_month</a></span>(the_month = <span class="fl">4</span>, the_year = <span class="fl">2020</span>)
+<span class="co"># update rds data (not run in this example to not modify raw data)</span>
+<span class="co">#  and return last_month updated</span>
+<span class="kw">last_month_updated</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/update_data.html">update_data</a></span>(
+  path = <span class="kw">rds_file</span>, 
+  statuses = <span class="kw">last_month_tweets</span><span class="op">$</span><span class="kw">status_id</span>, 
+  return_all = <span class="fl">FALSE</span>,
+  overwrite = <span class="fl">TRUE</span>)
+</pre></div>
 <ul>
 <li>Find top tweets</li>
 </ul>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">output</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/top_tweets.html">top_tweets</a></span>(<span class="kw">all_tweets</span> <span class="kw">=</span> <span class="no">last_month_updated</span>, <span class="kw">post_tweet</span> <span class="kw">=</span> <span class="fl">FALSE</span>, <span class="kw">top_number</span> <span class="kw">=</span> <span class="fl">5</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="kw">output</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/top_tweets.html">top_tweets</a></span>(all_tweets = <span class="kw">last_month_updated</span>, post_tweet = <span class="fl">FALSE</span>, top_number = <span class="fl">5</span>)
+</pre></div>
 <ul>
 <li>Show stats</li>
 </ul>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">output</span>$<span class="no">number_contributors</span></pre></body></html></div>
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="kw">output</span><span class="op">$</span><span class="kw">number_contributors</span>
+</pre></div>
 <p><img src="ab-top_tweets_files/figure-html/unnamed-chunk-6-1.png" width="50%" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">output</span>$<span class="no">top_retweet</span></pre></body></html></div>
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="kw">output</span><span class="op">$</span><span class="kw">top_retweet</span>
+</pre></div>
 <p><img src="ab-top_tweets_files/figure-html/unnamed-chunk-6-2.png" width="50%" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">output</span>$<span class="no">number_tweets</span></pre></body></html></div>
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="kw">output</span><span class="op">$</span><span class="kw">number_tweets</span>
+</pre></div>
 <p><img src="ab-top_tweets_files/figure-html/unnamed-chunk-6-3.png" width="50%" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">output</span>$<span class="no">text_tweet</span></pre></body></html></div>
-<p>Summary of April #rspatial: 195 tweets, 84 different contributors.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit">
+<span class="kw">output</span><span class="op">$</span><span class="kw">text_tweet</span>
+</pre></div>
+<p>Summary of August #rspatial: 195 tweets, 84 different contributors.</p>
 <p>Most retweeted: <a href="https://twitter.com/jakub_nowosad/status/1251872204012302337" class="uri">https://twitter.com/jakub_nowosad/status/1251872204012302337</a> by <span class="citation">@jakub_nowosad</span>.</p>
 </div>
   </div>
@@ -154,7 +170,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.9000.</p>
 </div>
 
       </footer>

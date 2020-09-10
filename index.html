@@ -99,43 +99,98 @@ Current version is 0.0.1 <!-- description: end --></p>
 <!-- install: start -->
 <p>The list of dependencies required to install this package is: {dplyr}, {knitr}, {magrittr}, {rmarkdown}, {rtweet}.</p>
 <p>To install the package, you can run the following script</p>
-<div class="sourceCode" id="cb1"><pre class="r"><span class="co"># install.packages("remotes")</span>
-<span class="kw pkg">remotes</span><span class="kw ns">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="kw">repo</span> <span class="kw">=</span> <span class="st">"statnmap/tweetrbot"</span>)</pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="co"># install.packages("remotes")</span>
+<span class="kw">remotes</span>::<span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(repo = <span class="st">"statnmap/tweetrbot"</span>)
+</pre></div>
 </div>
 <div id="example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example" class="anchor"></a>Example</h2>
 <p><img src="reference/figures/fig_tweetrbot_with_func.png" width="60%" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb2"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tweetrbot</span>)</pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/statnmap/tweetrbot">tweetrbot</a></span>)
+</pre></div>
 <p>This package is presented in a blog post on <a href="https://statnmap.com/2019-08-30-create-a-twitter-bot-on-a-raspberry-pi-3-using-r" class="uri">https://statnmap.com/2019-08-30-create-a-twitter-bot-on-a-raspberry-pi-3-using-r</a></p>
 <div id="run-the-scripts-to-retweet-a-specific-hashtag" class="section level3">
 <h3 class="hasAnchor">
 <a href="#run-the-scripts-to-retweet-a-specific-hashtag" class="anchor"></a>Run the scripts to retweet a specific hashtag</h3>
 <p>This is set for a bot. This means that every tweets retrieved from <code><a href="reference/get_and_store.html">get_and_store()</a></code> will be retweeted using <code><a href="reference/retweet_and_update.html">retweet_and_update()</a></code> using a loop, with 1 tweet every 600 seconds here. Set to <code>debug=TRUE</code> to avoid really tweeting on Twitter if you want to make some tests.</p>
-<div class="sourceCode" id="cb3"><pre class="r"><span class="co">## Retrieve tweets, store on the drive</span>
-<span class="fu"><a href="reference/get_and_store.html">get_and_store</a></span>(<span class="kw">query</span> <span class="kw">=</span> <span class="st">"#rspatial"</span>, <span class="kw">n_tweets</span> <span class="kw">=</span> <span class="fl">20</span>, <span class="kw">dir</span> <span class="kw">=</span> <span class="st">"."</span>)
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="co">## Retrieve tweets, store on the drive</span>
+<span class="fu"><a href="reference/get_and_store.html">get_and_store</a></span>(query = <span class="st">"#rspatial"</span>, n_tweets = <span class="fl">20</span>, dir = <span class="st">"."</span>)
 <span class="co">## Tweet regularly and update the table stored on the drive</span>
-<span class="fu"><a href="reference/retweet_and_update.html">retweet_and_update</a></span>(<span class="kw">dir</span> <span class="kw">=</span> <span class="st">"."</span>, <span class="kw">n_tweets</span> <span class="kw">=</span> <span class="fl">20</span>, <span class="kw">n_limit</span> <span class="kw">=</span> <span class="fl">3</span>, <span class="kw">sys_sleep</span> <span class="kw">=</span> <span class="fl">600</span>, <span class="kw">debug</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></div>
+<span class="fu"><a href="reference/retweet_and_update.html">retweet_and_update</a></span>(dir = <span class="st">"."</span>, n_tweets = <span class="fl">20</span>, n_limit = <span class="fl">3</span>, sys_sleep = <span class="fl">600</span>, debug = <span class="fl">TRUE</span>)
+</pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co">#&gt; # A tibble: 1,568 x 92</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="co">#&gt;    user_id status_id created_at          screen_name text  source</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="co">#&gt;    &lt;chr&gt;   &lt;chr&gt;     &lt;dttm&gt;              &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt; </span></span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="co">#&gt;  1 330749… 13040524… 2020-09-10 13:41:43 PennMUSA    "Hav… Twitt…</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="co">#&gt;  2 895591… 13040521… 2020-09-10 13:40:32 StatnMap    "🌍Th… Twitt…</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="co">#&gt;  3 788105… 13038515… 2020-09-10 00:23:40 taraskaduk  "Hey… Twitt…</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a><span class="co">#&gt;  4 828915… 13037746… 2020-09-09 19:17:55 dpprdan     "#rs… Twitt…</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a><span class="co">#&gt;  5 523216… 13036839… 2020-09-09 13:17:18 charliejha… "How… Twitt…</span></span>
+<span id="cb4-9"><a href="#cb4-9"></a><span class="co">#&gt;  6 278275… 13036403… 2020-09-09 10:24:15 MichaelDor… "@tj… Twitt…</span></span>
+<span id="cb4-10"><a href="#cb4-10"></a><span class="co">#&gt;  7 304121… 13034890… 2020-09-09 00:22:54 charles_ga… "Wha… Twitt…</span></span>
+<span id="cb4-11"><a href="#cb4-11"></a><span class="co">#&gt;  8 120696… 13033874… 2020-09-08 17:39:22 ambiogeo    "Liv… Twitt…</span></span>
+<span id="cb4-12"><a href="#cb4-12"></a><span class="co">#&gt;  9 121618… 13032407… 2020-09-08 07:56:26 maurosc3ner "Bay… Twitt…</span></span>
+<span id="cb4-13"><a href="#cb4-13"></a><span class="co">#&gt; 10 599924… 13029931… 2020-09-07 15:32:40 ultrazool   "@ge… Twitt…</span></span>
+<span id="cb4-14"><a href="#cb4-14"></a><span class="co">#&gt; # … with 1,558 more rows, and 86 more variables: display_text_width &lt;dbl&gt;,</span></span>
+<span id="cb4-15"><a href="#cb4-15"></a><span class="co">#&gt; #   reply_to_status_id &lt;chr&gt;, reply_to_user_id &lt;chr&gt;,</span></span>
+<span id="cb4-16"><a href="#cb4-16"></a><span class="co">#&gt; #   reply_to_screen_name &lt;chr&gt;, is_quote &lt;lgl&gt;, is_retweet &lt;lgl&gt;,</span></span>
+<span id="cb4-17"><a href="#cb4-17"></a><span class="co">#&gt; #   favorite_count &lt;int&gt;, retweet_count &lt;int&gt;, quote_count &lt;int&gt;,</span></span>
+<span id="cb4-18"><a href="#cb4-18"></a><span class="co">#&gt; #   reply_count &lt;int&gt;, hashtags &lt;list&gt;, symbols &lt;list&gt;, urls_url &lt;list&gt;,</span></span>
+<span id="cb4-19"><a href="#cb4-19"></a><span class="co">#&gt; #   urls_t.co &lt;list&gt;, urls_expanded_url &lt;list&gt;, media_url &lt;list&gt;,</span></span>
+<span id="cb4-20"><a href="#cb4-20"></a><span class="co">#&gt; #   media_t.co &lt;list&gt;, media_expanded_url &lt;list&gt;, media_type &lt;list&gt;,</span></span>
+<span id="cb4-21"><a href="#cb4-21"></a><span class="co">#&gt; #   ext_media_url &lt;list&gt;, ext_media_t.co &lt;list&gt;, ext_media_expanded_url &lt;list&gt;,</span></span>
+<span id="cb4-22"><a href="#cb4-22"></a><span class="co">#&gt; #   ext_media_type &lt;chr&gt;, mentions_user_id &lt;list&gt;, mentions_screen_name &lt;list&gt;,</span></span>
+<span id="cb4-23"><a href="#cb4-23"></a><span class="co">#&gt; #   lang &lt;chr&gt;, quoted_status_id &lt;chr&gt;, quoted_text &lt;chr&gt;,</span></span>
+<span id="cb4-24"><a href="#cb4-24"></a><span class="co">#&gt; #   quoted_created_at &lt;dttm&gt;, quoted_source &lt;chr&gt;, quoted_favorite_count &lt;int&gt;,</span></span>
+<span id="cb4-25"><a href="#cb4-25"></a><span class="co">#&gt; #   quoted_retweet_count &lt;int&gt;, quoted_user_id &lt;chr&gt;, quoted_screen_name &lt;chr&gt;,</span></span>
+<span id="cb4-26"><a href="#cb4-26"></a><span class="co">#&gt; #   quoted_name &lt;chr&gt;, quoted_followers_count &lt;int&gt;,</span></span>
+<span id="cb4-27"><a href="#cb4-27"></a><span class="co">#&gt; #   quoted_friends_count &lt;int&gt;, quoted_statuses_count &lt;int&gt;,</span></span>
+<span id="cb4-28"><a href="#cb4-28"></a><span class="co">#&gt; #   quoted_location &lt;chr&gt;, quoted_description &lt;chr&gt;, quoted_verified &lt;lgl&gt;,</span></span>
+<span id="cb4-29"><a href="#cb4-29"></a><span class="co">#&gt; #   retweet_status_id &lt;chr&gt;, retweet_text &lt;chr&gt;, retweet_created_at &lt;dttm&gt;,</span></span>
+<span id="cb4-30"><a href="#cb4-30"></a><span class="co">#&gt; #   retweet_source &lt;chr&gt;, retweet_favorite_count &lt;int&gt;,</span></span>
+<span id="cb4-31"><a href="#cb4-31"></a><span class="co">#&gt; #   retweet_retweet_count &lt;int&gt;, retweet_user_id &lt;chr&gt;,</span></span>
+<span id="cb4-32"><a href="#cb4-32"></a><span class="co">#&gt; #   retweet_screen_name &lt;chr&gt;, retweet_name &lt;chr&gt;,</span></span>
+<span id="cb4-33"><a href="#cb4-33"></a><span class="co">#&gt; #   retweet_followers_count &lt;int&gt;, retweet_friends_count &lt;int&gt;,</span></span>
+<span id="cb4-34"><a href="#cb4-34"></a><span class="co">#&gt; #   retweet_statuses_count &lt;int&gt;, retweet_location &lt;chr&gt;,</span></span>
+<span id="cb4-35"><a href="#cb4-35"></a><span class="co">#&gt; #   retweet_description &lt;chr&gt;, retweet_verified &lt;lgl&gt;, place_url &lt;chr&gt;,</span></span>
+<span id="cb4-36"><a href="#cb4-36"></a><span class="co">#&gt; #   place_name &lt;chr&gt;, place_full_name &lt;chr&gt;, place_type &lt;chr&gt;, country &lt;chr&gt;,</span></span>
+<span id="cb4-37"><a href="#cb4-37"></a><span class="co">#&gt; #   country_code &lt;chr&gt;, geo_coords &lt;list&gt;, coords_coords &lt;list&gt;,</span></span>
+<span id="cb4-38"><a href="#cb4-38"></a><span class="co">#&gt; #   bbox_coords &lt;list&gt;, status_url &lt;chr&gt;, name &lt;chr&gt;, location &lt;chr&gt;,</span></span>
+<span id="cb4-39"><a href="#cb4-39"></a><span class="co">#&gt; #   description &lt;chr&gt;, url &lt;chr&gt;, protected &lt;lgl&gt;, followers_count &lt;int&gt;,</span></span>
+<span id="cb4-40"><a href="#cb4-40"></a><span class="co">#&gt; #   friends_count &lt;int&gt;, listed_count &lt;int&gt;, statuses_count &lt;int&gt;,</span></span>
+<span id="cb4-41"><a href="#cb4-41"></a><span class="co">#&gt; #   favourites_count &lt;int&gt;, account_created_at &lt;dttm&gt;, verified &lt;lgl&gt;,</span></span>
+<span id="cb4-42"><a href="#cb4-42"></a><span class="co">#&gt; #   profile_url &lt;chr&gt;, profile_expanded_url &lt;chr&gt;, account_lang &lt;lgl&gt;,</span></span>
+<span id="cb4-43"><a href="#cb4-43"></a><span class="co">#&gt; #   profile_banner_url &lt;chr&gt;, profile_background_url &lt;chr&gt;,</span></span>
+<span id="cb4-44"><a href="#cb4-44"></a><span class="co">#&gt; #   profile_image_url &lt;chr&gt;, retweet_order &lt;dbl&gt;, bot_retweet &lt;lgl&gt;</span></span></code></pre></div>
 </div>
 <div id="run-the-script-to-retrieve-your-user-information" class="section level3">
 <h3 class="hasAnchor">
 <a href="#run-the-script-to-retrieve-your-user-information" class="anchor"></a>Run the script to retrieve your user information</h3>
-<div class="sourceCode" id="cb4"><pre class="r"><span class="fu"><a href="reference/get_account_info.html">get_account_info</a></span>(<span class="kw">user</span> <span class="kw">=</span> <span class="st">"talk_rspatial"</span>)</pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="fu"><a href="reference/get_account_info.html">get_account_info</a></span>(user = <span class="st">"talk_rspatial"</span>)
+</pre></div>
 </div>
 <div id="post-the-most-retweeted-tweet-of-the-month" class="section level3">
 <h3 class="hasAnchor">
 <a href="#post-the-most-retweeted-tweet-of-the-month" class="anchor"></a>Post the most retweeted tweet of the month</h3>
 <p>Get the database gathered with <code><a href="reference/get_and_store.html">get_and_store()</a></code> and tweet the top of the month using <code><a href="reference/top_tweets.html">top_tweets()</a></code>.</p>
-<div class="sourceCode" id="cb5"><pre class="r"><span class="no">rds_file</span> <span class="kw">&lt;-</span> <span class="st">"complete_tweets_rspatial.rds"</span>
-<span class="no">all_tweets</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span>(<span class="no">rds_file</span>)
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="kw">rds_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"complete_tweets_rspatial.rds"</span>, package = <span class="st">"tweetrbot"</span>)
+<span class="kw">all_tweets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span>(<span class="kw">rds_file</span>)
 <span class="co"># filter on last month</span>
-<span class="no">last_month_tweets</span> <span class="kw">&lt;-</span> <span class="no">all_tweets</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="reference/filter_month.html">filter_month</a></span>(<span class="kw">the_month</span> <span class="kw">=</span> <span class="fl">4</span>)
+<span class="kw">last_month_tweets</span> <span class="op">&lt;-</span> <span class="kw">all_tweets</span> <span class="op">%&gt;%</span> <span class="fu"><a href="reference/filter_month.html">filter_month</a></span>(the_month = <span class="fl">4</span>, the_year = <span class="fl">2020</span>)
 <span class="co"># update last month</span>
-<span class="no">last_month_updated</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/update_data.html">update_data</a></span>(
-  <span class="kw">path</span> <span class="kw">=</span> <span class="no">rds_file</span>,
-  <span class="kw">statuses</span> <span class="kw">=</span> <span class="no">last_month_tweets</span>$<span class="no">status_id</span>)
+<span class="kw">last_month_updated</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/update_data.html">update_data</a></span>(
+  path = <span class="kw">rds_file</span>, 
+  statuses = <span class="kw">last_month_tweets</span><span class="op">$</span><span class="kw">status_id</span>)
 <span class="co"># Get stats of last month tweets</span>
-<span class="fu"><a href="reference/top_tweets.html">top_tweets</a></span>(<span class="kw">all_tweets</span> <span class="kw">=</span> <span class="no">last_month_updated</span>, <span class="kw">post_tweet</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">top_number</span> <span class="kw">=</span> <span class="fl">5</span>)</pre></div>
+<span class="fu"><a href="reference/top_tweets.html">top_tweets</a></span>(all_tweets = <span class="kw">last_month_updated</span>, post_tweet = <span class="fl">TRUE</span>, top_number = <span class="fl">5</span>)
+</pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-8-1.png" width="45%"><img src="reference/figures/README-unnamed-chunk-8-2.png" width="45%"></p>
 </div>
 </div>
 </div>
@@ -180,7 +235,7 @@ Current version is 0.0.1 <!-- description: end --></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.9000.</p>
 </div>
 
       </footer>
