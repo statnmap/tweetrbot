@@ -14,10 +14,12 @@
 #'  sets up by default during initial token creation).
 #'  For instruction on how to create a Twitter token see the tokens vignette,
 #'  i.e., 'vignettes("auth", "rtweet")'.
+#' @param hashtags_max Maximum number of hashtags allowed in tweets
+#' @param hashtag_stopwords Hashtags that you dont want to retweet
 #'
 #' @importFrom rtweet search_tweets
 #' @importFrom dplyr mutate bind_rows arrange distinct desc
-#' @importFrom dplyr group_by case_when ungroup
+#' @importFrom dplyr group_by case_when ungroup filter
 #'
 #' @export
 get_and_store <- function(
@@ -27,7 +29,9 @@ get_and_store <- function(
   complete_tweets_file = "complete_tweets_rspatial.rds",
   log = TRUE, logfile = "rtweet_console.log",
   loop_pid_file = "loop_pid.log",
-  token = NULL) {
+  token = NULL,
+  hashtags_max = 5,
+  hashtag_stopwords = "robot") {
 
   if (!dir.exists(dir)) {dir.create(dir)}
 
@@ -59,7 +63,11 @@ get_and_store <- function(
   ) %>%
     mutate(
       retweet_order = NA_real_,
-      bot_retweet = FALSE)
+      bot_retweet = FALSE,
+      hashtags_nb = unlist(lapply(entities, function(x) nrow(x$hashtags))),
+      hashtags_stop = unlist(lapply(entities, function(x) any(x$hashtags$text %in% hashtag_stopwords)))
+    ) %>%
+    filter(hashtags_nb <= hashtags_max & !hashtags_stop)
 
   # Add to the existing database
   if (isTRUE(log)) {
@@ -160,7 +168,7 @@ retweet_and_update <- function(
 		pid <- as.integer(loop_pid)
 		test_pid <- try(ps_handle(pid), silent = TRUE)
 		# Does not exists
-		if (class(test_pid) == "try-error") {
+		if (isTRUE(inherits(test_pid, "try-error"))) {
 		  file.remove(file.path(dir, loop_pid_file))
 		  file.create(file.path(dir, loop_pid_file))
 		} else if (!ps_name(test_pid) %in% c("R", "Rscript")) {

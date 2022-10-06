@@ -13,7 +13,9 @@ get_and_store(
   log = TRUE,
   logfile = "rtweet_console.log",
   loop_pid_file = "loop_pid.log",
-  token = NULL
+  token = NULL,
+  hashtags_max = 5,
+  hashtag_stopwords = "robot"
 )
 }
 \arguments{
@@ -39,6 +41,10 @@ token via environment variables (which is what 'create_token()'
 sets up by default during initial token creation).
 For instruction on how to create a Twitter token see the tokens vignette,
 i.e., 'vignettes("auth", "rtweet")'.}
+
+\item{hashtags_max}{Maximum number of hashtags allowed in tweets}
+
+\item{hashtag_stopwords}{Hashtags that you dont want to retweet}
 }
 \description{
 Retrieve tweets and store locally

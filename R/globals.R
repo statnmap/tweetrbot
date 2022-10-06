@@ -6,6 +6,8 @@ globalVariables(
     "status_id", "name_tweet", "date", "n", "is_retweet", "tweet_url",
     "contributors", "retweet_quote_count", "quote_count",
     # filter_month
-    "all_tweets"
+    "all_tweets",
+    # get_and_store
+    "entities", "hashtags_nb", "hashtags_stop"
   ))
 )

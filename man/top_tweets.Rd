@@ -30,8 +30,9 @@ top_tweets(
 Length 1 for all the same, or length 3 resp. for:
 top retweeted, tweets per day, contributors per day}
 
-\item{token}{OAuth token. By default \code{token = NULL} fetches a
-non-exhausted token from an environment variable tokens.}
+\item{token}{Expert use only. Use this to override authentication for
+a single API call. In most cases you are better off changing the
+default for all calls. See \code{\link[rtweet:auth_as]{auth_as()}} for details.}
 
 \item{the_month_name}{Character. Month name that appear on graph.
 Default to last month name.}

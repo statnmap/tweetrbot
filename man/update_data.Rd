@@ -20,12 +20,9 @@ update_data(
 
 \item{statuses}{Tweet statuses to update}
 
-\item{token}{Every user should have their own Oauth (Twitter API) token. By
-default \code{token = NULL} this function looks for the path to a saved
-Twitter token via environment variables (which is what `create_token()`
-sets up by default during initial token creation). For instruction on how
-to create a Twitter token see the tokens vignette, i.e.,
-`vignettes("auth", "rtweet")` or see \code{?tokens}.}
+\item{token}{Expert use only. Use this to override authentication for
+a single API call. In most cases you are better off changing the
+default for all calls. See \code{\link[rtweet:auth_as]{auth_as()}} for details.}
 
 \item{return_all}{Logical. TRUE returns the complete dataset,
 FALSE returns data in statuses list (default).}

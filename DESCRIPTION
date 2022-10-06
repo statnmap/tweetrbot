@@ -2,13 +2,9 @@ Package: tweetrbot
 Title: Functions for a Twitter bot
 Version: 0.0.1
 Authors@R: 
-    person(given = "Sebastien",
-           family = "Rochette",
-           role = c("aut", "cre"),
-           email = "sebastien@thinkr.fr",
+    person("Sebastien", "Rochette", , "sebastien@thinkr.fr", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-1565-9313"))
-Description: Functions to allow retrieve, store and retweet
-    regularly.
+Description: Functions to allow retrieve, store and retweet regularly.
 License: MIT + file LICENSE
 URL: https://github.com/statnmap/tweetrbot
 BugReports: https://github.com/statnmap/tweetrbot/issues
@@ -32,4 +28,4 @@ VignetteBuilder:
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.0
+RoxygenNote: 7.2.1
