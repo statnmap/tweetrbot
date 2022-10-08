@@ -57,17 +57,29 @@ get_and_store <- function(
     cat("--- get_and_store : Retrieve tweets ---\n") # for log
   }
 
-  new_tweets <- search_tweets(
+  new_tweets_a <- search_tweets(
     query, n = n_tweets, include_rts = FALSE,
     token = token
   ) %>%
     mutate(
       retweet_order = NA_real_,
-      bot_retweet = FALSE,
+      bot_retweet = FALSE)
+
+  if (packageVersion("rtweet") >= "1.0.0") {
+  new_tweets <- new_tweets_a %>%
+    mutate(
       hashtags_nb = unlist(lapply(entities, function(x) nrow(x$hashtags))),
       hashtags_stop = unlist(lapply(entities, function(x) any(x$hashtags$text %in% hashtag_stopwords)))
     ) %>%
     filter(hashtags_nb <= hashtags_max & !hashtags_stop)
+  } else {
+    new_tweets <- new_tweets_a %>%
+      mutate(
+        hashtags_nb = unlist(lapply(hashtags, length)),
+        hashtags_stop = unlist(lapply(hashtags, function(x) any(x %in% hashtag_stopwords)))
+      ) %>%
+      filter(hashtags_nb <= hashtags_max & !hashtags_stop)
+  }
 
   # Add to the existing database
   if (isTRUE(log)) {

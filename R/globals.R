@@ -8,6 +8,6 @@ globalVariables(
     # filter_month
     "all_tweets",
     # get_and_store
-    "entities", "hashtags_nb", "hashtags_stop"
+    "entities", "hashtags_nb", "hashtags_stop", "hashtags"
   ))
 )
