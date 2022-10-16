@@ -31,7 +31,7 @@ get_and_store <- function(
   loop_pid_file = "loop_pid.log",
   token = NULL,
   hashtags_max = 5,
-  hashtag_stopwords = "robot") {
+  hashtag_stopwords = c("robot", "100DaysOfCode")) {
 
   if (!dir.exists(dir)) {dir.create(dir)}
 
